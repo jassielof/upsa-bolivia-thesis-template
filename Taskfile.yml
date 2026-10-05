@@ -1,0 +1,12 @@
+version: 3
+
+vars:
+  GREETING: Hello, world!
+
+tasks:
+  default:
+    desc: Genera los documentos de la tesis
+    deps:
+      - spine
+  book_spine:
+  book-hard-cover
