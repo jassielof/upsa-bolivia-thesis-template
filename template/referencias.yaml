@@ -1,4 +1,5 @@
-# yaml-language-server: $schema=https://jassielof.github.io/json-schemas/docs/hayagriva.schema.json
+# yaml-language-server: $schema=https://typst-community.github.io/json-schemas/docs/hayagriva.schema.json
+
 IBMCarbonDesign:
   type: web
   title: IBM Carbon Design System
