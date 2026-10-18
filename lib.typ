@@ -275,7 +275,7 @@
   // Art. 143: Inicio y conclusión del capítulo
   // Se recomienda que cada capítulo comience en hoja aparte y que cada uno de ellos incluya un párrafo introductorio que presente su organización e indique al lector cuál es el objetivo específico del mismo.
   // Igualmente, al terminar cada capítulo es aconsejable redactar un párrafo que contenga un pequeño resumen de lo tratado e indique además la relación del capítulo que termina con el que empieza a continuación.
-  pagebreak()
+  pagebreak(weak: true)
   set par(justify: false, leading: paragraph.leading - 0.75em)
   set align(right)
   set block(sticky: false)
@@ -303,7 +303,7 @@
 }
 
 #let part-page(it) = context {
-  pagebreak()
+  pagebreak(weak: true)
   set par(justify: false)
   set page(numbering: none, header: none)
 
