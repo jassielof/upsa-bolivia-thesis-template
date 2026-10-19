@@ -26,16 +26,16 @@ Adicionalmente, la plantilla incluye los 2 formatos de portada requeridos por la
 
 Por otro lado, personalmente puedo recomendar las siguientes familias:
 
-- [IBM Plex](https://www.ibm.com/plex/): Incluye sans, sans-serif, monoespaciada y de matemáticas.
-- Adobe Source: Incluye sans, sans-serif, y monoespaciada.
+- [IBM Plex](https://www.ibm.com/plex/): Incluye Serif, Sans-Serif, monoespaciada y de matemáticas.
+- Adobe Source: Incluye Serif, Sans-Serif, y monoespaciada.
   - [Sans 3](https://fonts.google.com/specimen/Source+Sans+3):
   - [Serif 4](https://fonts.google.com/specimen/Source+Serif+4):
   - [Code Pro](https://fonts.google.com/specimen/Source+Code+Pro):
-- [Reforma](https://pampatype.com/reforma): Incluye sans, sans-serif, e híbrida.
+- [Reforma](https://pampatype.com/reforma): Incluye Serif, Sans-Serif, e híbrida.
 - Alegreya:
   - [Serif](https://fonts.google.com/specimen/Alegreya)
-  - [Sans](https://fonts.google.com/specimen/Alegreya+Sans)
-- [Montserrat](https://fonts.google.com/specimen/Montserrat): Sans
+  - [Sans-Serif](https://fonts.google.com/specimen/Alegreya+Sans)
+- [Montserrat](https://fonts.google.com/specimen/Montserrat): Sans-Serif
 - [EB Garamond](https://fonts.google.com/specimen/EB+Garamond): Serif
 
 Es importante notar que la plantilla hace uso de versalillas en los _títulos_, por lo cual de las mencionadas anteriormente, las siguientes no tienen versalillas: Montserrat, IBM Plex y Reforma.
