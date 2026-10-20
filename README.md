@@ -1,55 +1,190 @@
-# Universidad Privada de Santa Cruz de la Sierra (UPSA)
+# Plantilla Typst para trabajos de grado de la UPSA
 
-> Template for final degree works. This template is targeted to a *Spanish-speaking audience* given the nature of the university, this paragraph is just presented for accessibility.
+Plantilla reutilizable para la elaboración de trabajos finales de grado de la Universidad Privada de Santa Cruz de la Sierra (UPSA), desarrollada con [Typst](https://typst.app/).
 
-## Plantillas de documentos finales
+El proyecto busca facilitar la aplicación consistente de los requisitos de presentación académica mediante estilos y componentes reutilizables, reduciendo la necesidad de realizar ajustes manuales durante la redacción.
 
-La plantilla se usa para la creación de documentos finales o _trabajos finales de grado_ (TFG), principalmente diseñado para proyectos de grado, aunque puede ser adaptado para tesis y trabajos dirigidos, se incluyen dos plantillas iniciales:
+> [!IMPORTANT]
+> Este proyecto es una iniciativa independiente y no constituye una plantilla oficialmente aprobada por la UPSA. Su utilización debe ajustarse al Reglamento de Graduación vigente y a las indicaciones de la unidad académica correspondiente.
 
-- Estudio de factibilidad, proyecto de 14 capítulos basándose en la estructura del ing. Paz Parada, Juan Carlos, usualmente para grados de ing. industrial.
-- Proyecto de grado, con una estructura basándose en la típica para proyectos de ing. de sistemas, separada por partes.
-  - Plan de proyecto, que es la propuesta del proyecto de grado (o usualmente el primer capítulo del documento final).
+## Comenzar
 
-Adicionalmente, la plantilla incluye los 2 formatos de portada requeridos por la universidad para la impresión final:
+Para elaborar un trabajo académico a partir de un proyecto de ejemplo, se recomienda utilizar el [kit de inicio para trabajos de grado](https://github.com/jassielof/upsa-bolivia-thesis-starter).
 
-- Lomo del libro.
-- Cubierta o carátula del libro.
+El kit incluye documentos de ejemplo, recursos gráficos, instrucciones de compilación, tareas automatizadas y una configuración de trabajo orientada a estudiantes.
 
-## Fuentes tipográficas
+Este repositorio contiene la implementación de la plantilla y está dirigido principalmente a quienes necesitan comprender, configurar o mantener sus estilos y componentes.
 
-2 conjuntos de fuentes tipográficas son recomendadas, principalmente, el conjunto de fuentes recomendadas por la universidad:
+## Documentos contemplados
 
-- [_TeX Gyre Termes_](https://www.gust.org.pl/projects/e-foundry/tex-gyre/termes), como alternativa a [_Times New Roman_](https://fonts.adobe.com/fonts/times-new-roman) para el cuerpo general del documento.
-- [_TeX Gyre Heros_](https://www.gust.org.pl/projects/e-foundry/tex-gyre/heros), como alternativa a [_Helvetica_](https://fonts.adobe.com/fonts/helvetica) (o [_Arial_](https://fonts.adobe.com/fonts/arial)) para títulos y encabezados.
-- [_TeX Gyre Cursor_](https://www.gust.org.pl/projects/e-foundry/tex-gyre/cursor), como alternativa a [_Courier_](https://fonts.adobe.com/fonts/courier) para código y texto monoespaciado.
-- [_TeX Gyre Termes Math_](https://www.gust.org.pl/projects/e-foundry/tg-math), como complemento para el conjunto de fuentes matemáticas.
+La implementación se ha desarrollado principalmente alrededor de las necesidades de los proyectos de grado de Ingeniería.
 
-Por otro lado, personalmente puedo recomendar las siguientes familias:
+Los documentos contemplados por el kit de inicio incluyen:
 
-- [IBM Plex](https://www.ibm.com/plex/): Incluye Serif, Sans-Serif, monoespaciada y de matemáticas.
-- Adobe Source: Incluye Serif, Sans-Serif, y monoespaciada.
-  - [Sans 3](https://fonts.google.com/specimen/Source+Sans+3):
-  - [Serif 4](https://fonts.google.com/specimen/Source+Serif+4):
-  - [Code Pro](https://fonts.google.com/specimen/Source+Code+Pro):
-- [Reforma](https://pampatype.com/reforma): Incluye Serif, Sans-Serif, e híbrida.
-- Alegreya:
-  - [Serif](https://fonts.google.com/specimen/Alegreya)
-  - [Sans-Serif](https://fonts.google.com/specimen/Alegreya+Sans)
-- [Montserrat](https://fonts.google.com/specimen/Montserrat): Sans-Serif
-- [EB Garamond](https://fonts.google.com/specimen/EB+Garamond): Serif
+- **Trabajo de grado:** manuscrito principal utilizado para presentar el proyecto desarrollado.
+- **Plan de trabajo:** documento de planificación y propuesta, correspondiente a la etapa inicial del proyecto.
+- **Estudio de factibilidad:** documento cuya estructura se basa en el modelo utilizado en determinadas carreras de Ingeniería Industrial.
+- **Resumen:** documento complementario de síntesis del trabajo.
+- **Cubierta y lomo:** recursos para la presentación física de los ejemplares.
+- **Currículum:** documento complementario cuando corresponde a los requisitos de entrega.
 
-Es importante notar que la plantilla hace uso de versalillas en los _títulos_, por lo cual de las mencionadas anteriormente, las siguientes no tienen versalillas: Montserrat, IBM Plex y Reforma.
+La aplicabilidad de cada documento depende de la modalidad de graduación y de los requisitos de la carrera.
 
-### Licencias de las fuentes tipográficas
+### Estructura académica
 
-Todas las mencionadas previamente son de uso libre y seguras de usar. A comparación de las recomendadas por la universidad:
+Los ejemplos iniciales se basan en experiencias concretas de proyectos de grado:
 
-- _Arial_ y _Times New Roman_ son fuentes propietarias heredadas bajo uso por Microsoft Windows, usuarios de Linux y MacOS básicamente no tienen acceso a estas fuentes.
-- _Helvetica_ es el mismo caso que _Arial_ pero para MacOS.
+- El estudio de factibilidad utiliza como referencia la estructura de catorce capítulos asociada al material del Ing. Juan Carlos Paz Parada.
+- El proyecto de grado de Sistemas se organizó mediante partes relacionadas con hitos de la metodología ICONIX.
+- El plan de proyecto representa la etapa de formulación y planificación del trabajo.
+
+Estas estructuras son ejemplos de aplicación, no modelos obligatorios para todas las carreras.
+
+Se prevé establecer una organización por capítulos como opción predeterminada y permitir el uso de partes cuando resulte pertinente. La configuración de partes permanece pendiente de ajustes técnicos y aclaración académica.
+
+## Tipografía
+
+La selección tipográfica es uno de los principales aspectos de la plantilla sujetos a evaluación institucional.
+
+El Reglamento de Graduación menciona familias como Times New Roman, Arial y Helvetica. Sin embargo, su disponibilidad y sus condiciones de distribución pueden variar según el sistema operativo, el entorno de trabajo y la licencia correspondiente.
+
+La plantilla propone incorporar conjuntos tipográficos completos y redistribuibles para mejorar la portabilidad entre Windows, macOS, Linux y el editor web de Typst.
+
+### Conjunto inicial: TeX Gyre
+
+| Función | Familia | Referencia tipográfica |
+|---|---|---|
+| Texto principal | [TeX Gyre Termes](https://www.gust.org.pl/projects/e-foundry/tex-gyre/termes) | Diseño similar a Times |
+| Títulos | [TeX Gyre Heros](https://www.gust.org.pl/projects/e-foundry/tex-gyre/heros) | Diseño similar a Helvetica |
+| Código | [TeX Gyre Cursor](https://www.gust.org.pl/projects/e-foundry/tex-gyre/cursor) | Diseño monoespaciado |
+| Matemáticas | [TeX Gyre Termes Math](https://www.gust.org.pl/projects/e-foundry/tg-math) | Complemento matemático de Termes |
+
+Este conjunto permite cubrir los principales usos tipográficos de un documento académico sin depender exclusivamente de fuentes instaladas en el sistema.
+
+> [!NOTE]
+> TeX Gyre constituye la propuesta técnica inicial. Su semejanza visual con las fuentes mencionadas por la UPSA no implica equivalencia normativa ni autorización institucional para sustituirlas.
+
+### Posibles conjuntos adicionales
+
+Las siguientes familias podrían evaluarse en futuras versiones:
+
+- [IBM Plex](https://github.com/IBM/plex): Serif, Sans, Mono y Math.
+- [Adobe Source](https://github.com/adobe-fonts): Source Serif, Source Sans y Source Code; requiere elegir una fuente matemática complementaria.
+- [Libertinus](https://github.com/alerque/libertinus): Serif, Sans, Mono y Math.
+- [Reforma](https://www.pampatype.com/reforma): familia tipográfica desarrollada para la Universidad Nacional de Córdoba.
+- [Alegreya](https://fonts.google.com/specimen/Alegreya) y [Alegreya Sans](https://fonts.google.com/specimen/Alegreya+Sans).
+- [Montserrat](https://fonts.google.com/specimen/Montserrat).
+- [EB Garamond](https://fonts.google.com/specimen/EB+Garamond).
+
+Estas familias no deben considerarse automáticamente compatibles entre sí ni equivalentes en términos de tamaño, métricas, cobertura de caracteres y funciones OpenType.
+
+La compatibilidad con versalitas, cursivas, negritas, matemáticas y otros recursos tipográficos debe comprobarse para cada combinación y versión de los archivos.
+
+### Licencias
+
+Las familias propuestas pueden distribuirse bajo licencias diferentes, como la SIL Open Font License, la GUST Font License u otras condiciones específicas.
+
+Antes de incluir una fuente en el kit es necesario comprobar:
+
+1. La licencia correspondiente a los archivos utilizados.
+2. Las condiciones de redistribución.
+3. Los avisos de copyright y atribución requeridos.
+4. La disponibilidad de los estilos y caracteres necesarios.
+5. Su funcionamiento con las versiones de Typst utilizadas por el proyecto.
+
+No debe suponerse que una fuente es redistribuible simplemente porque esté instalada en un sistema operativo o disponible gratuitamente para uso individual.
+
+Las licencias y avisos correspondientes a las fuentes distribuidas deben acompañar a sus archivos.
+
+## Configuración y estilos
+
+La plantilla centraliza reglas para la presentación de documentos académicos y permite reutilizar configuraciones comunes.
+
+Sus principales ámbitos de aplicación incluyen:
+
+- Jerarquía y numeración de encabezados.
+- Presentación de texto y párrafos.
+- Figuras, tablas y referencias internas.
+- Portadas y elementos institucionales.
+- Expresiones matemáticas y contenido monoespaciado.
+- Citas y referencias bibliográficas.
+- Organización de capítulos y, cuando corresponda, partes.
+
+Los parámetros concretos, sus valores admitidos y sus valores predeterminados deben consultarse en la implementación de la plantilla.
+
+No todos los aspectos propuestos están necesariamente disponibles en la versión actual. En particular, los conjuntos tipográficos enumerados y la configuración opcional de partes requieren completar sus respectivos ajustes.
+
+## Citas y bibliografía
+
+Typst permite gestionar fuentes bibliográficas y aplicar estilos de citación mediante CSL (Citation Style Language).
+
+El estilo utilizado debe responder a los requisitos vigentes de la carrera o de la unidad académica correspondiente.
+
+APA puede utilizarse como configuración general, mientras que otros sistemas, como IEEE, ACM o ASCE, pueden resultar pertinentes según la disciplina y las autorizaciones académicas aplicables.
+
+La selección de un estilo de citas y referencias no implica que todo el documento adopte automáticamente el formato editorial completo de dicho estilo.
+
+## Accesibilidad y documentos PDF
+
+La plantilla busca favorecer la generación de documentos PDF estructurados y accesibles mediante el uso apropiado de encabezados, figuras, tablas, referencias y otros elementos semánticos.
+
+Typst dispone de funciones de exportación y comprobación relacionadas con estándares como PDF/UA y PDF/A.
+
+Sin embargo, la accesibilidad de un documento también depende de su contenido y de las decisiones de autoría, incluidas:
+
+- La jerarquía correcta de encabezados.
+- Las descripciones alternativas de imágenes cuando sean necesarias.
+- El orden lógico de lectura.
+- La identificación apropiada de tablas y otros elementos.
+- La correcta utilización de caracteres y expresiones matemáticas.
+
+Una compilación exitosa no garantiza por sí sola la accesibilidad integral del documento.
+
+Para más información, consultá la [guía oficial de accesibilidad de Typst](https://typst.app/docs/guides/accessibility/).
+
+## Uso y mantenimiento
+
+La plantilla se utiliza dentro del kit de inicio mediante los archivos y rutas definidos por el proyecto.
+
+Para un entorno de trabajo reproducible es recomendable:
+
+- Utilizar una versión conocida del compilador Typst.
+- Conservar las versiones de las fuentes y sus licencias.
+- Mantener disponibles los recursos externos.
+- Comprobar el funcionamiento de las dependencias.
+- Verificar los documentos generados después de modificar estilos o actualizar el compilador.
+
+Los cambios en la plantilla pueden afectar a documentos existentes, por lo que deben probarse mediante ejemplos representativos antes de su distribución.
+
+## Estado institucional
+
+La plantilla y el kit de inicio están disponibles para evaluación académica.
+
+Las principales cuestiones pendientes son:
+
+- La aceptación de familias tipográficas alternativas a las mencionadas en el Reglamento de Graduación.
+- La configuración predeterminada por capítulos y la posibilidad de utilizar partes.
+- La comprobación del funcionamiento en diferentes entornos.
+- La recopilación de observaciones de estudiantes y docentes.
+- La eventual evaluación de mejoras adicionales de presentación académica.
+
+La propuesta no requiere sustituir los procesadores de texto utilizados actualmente por la Universidad ni modificar de inmediato sus normas de presentación.
+
+## Documentación
+
+- [Kit de inicio para trabajos de grado](https://github.com/jassielof/upsa-bolivia-thesis-starter)
+- [Documentación oficial de Typst](https://typst.app/docs/)
+- [Traducción no oficial de Typst al español](https://jassielof.github.io/typst/)
 
 ## Licencia
 
-Este proyecto está licenciado bajo *Apache License 2.0*, esta solo es aplicada a la plantilla en sí.
+La implementación de esta plantilla se distribuye bajo la **Apache License 2.0**, conforme a los archivos de licencia del repositorio.
 
-- El documento del estudiante generado con la plantilla no es considerado.
-- El logo de la universidad usado en la portada es propiedad de la universidad, y no es parte de la licencia de este proyecto.
+Esta licencia no se extiende automáticamente a:
+
+- Los documentos académicos creados por los estudiantes.
+- Las fuentes tipográficas incluidas o utilizadas.
+- Los recursos de terceros sujetos a licencias independientes.
+- Los signos distintivos y el logotipo de la Universidad Privada de Santa Cruz de la Sierra.
+
+Cada recurso conserva sus condiciones de uso y distribución correspondientes.
