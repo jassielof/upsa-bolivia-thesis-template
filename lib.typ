@@ -3,6 +3,7 @@
 #import "lib/title.typ": front-cover, title-page
 #import "lib/spine.typ"
 #import "lib/default.typ"
+#import "lib/abstract.typ": indicative-abstract
 #import "lib/csl-styles.typ"
 #import "lib/state.typ": (
   document-advisor, document-author, document-degree, document-fonts, document-graduation-work, document-institution,
