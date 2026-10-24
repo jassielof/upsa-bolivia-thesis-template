@@ -9,7 +9,7 @@
   document-advisor, document-author, document-degree, document-fonts, document-graduation-work, document-institution,
   document-paragraph,
 )
-
+// TODO: Add support for multi-part thesis, as it's usualy for thesis to just be multi-chapter, but not multi-part, so they must default to multi-chapter, with a boolean parameter to toggle multi-part thesis, converting first level headings to parts and second to chapters.
 // Define la configuración general de la plantilla.
 #let settings(
   // Información general del autor o estudiante que realiza el trabajo de graduación.
