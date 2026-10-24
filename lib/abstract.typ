@@ -23,6 +23,7 @@
   set document(
     title: title,
     author: name,
+    description: body,
   )
 
   assert(name != none, message: "El nombre del autor es necesario.")
@@ -36,7 +37,7 @@
 
   show std.title: set align(center)
   show std.title: set block(spacing: 2em)
-  set text(size: 11pt, lang: "es", region: "bo")
+  set text(size: 11pt, lang: "es", region: "bo", hyphenate: false)
   set page(paper: "a4", margin: 1.5in)
   set par(justify: true)
   set terms(separator: [: ])
@@ -57,11 +58,9 @@
 
   std.title()
 
-  set align(horizon)
-
   import "@preview/wordometer:0.1.6": total-words, word-count
   show: word-count
-
+  set text(hyphenate: true)
   let hard-limit = 250
 
   word-count(
