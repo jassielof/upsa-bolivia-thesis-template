@@ -1,7 +1,6 @@
 #import "lib/string.typ": to-string
-#import "lib/title.typ": front-cover, title-page
-#import "lib/book.typ" as spine
-#import "lib/default.typ"
+#import "lib/title.typ": title-page
+#import "lib/book.typ": front-cover as book-front-cover, spine-cover as book-spine-cover
 #import "lib/abstract.typ": bime as bime-abstract
 #import "lib/csl-styles.typ"
 
@@ -23,10 +22,6 @@
   degree-program: none,
   /// Nombre del/os asesor/es o guía/s del trabajo de grado.
   supervisor: none,
-  // Información general del trabajo de graduación.
-  //
-  // Corresponde al título del trabajo, subtítulo, su resumen o abstracto (descripción general), palabras clave, si es un plan/propuesta de investigación, fecha de presentación, y la modalidad de graduación (por ejemplo: Proyecto de Grado, Tesis, Trabajo Dirigido, etc.).
-  graduation-work-info: default.graduation-work-info,
   /// Título del trabajo de grado.
   work-title: none,
   /// Abstracto o resumen del trabajo de grado.
@@ -286,62 +281,6 @@
   math-outline
   listing-outline
   appendix-outline
-}
-
-// Genera el abstracto del documento.
-#let abstract(
-  problem: none,
-  objective: none,
-  content: none,
-) = context {
-  set heading(numbering: none, outlined: false, level: 2)
-  show outline: set heading(numbering: none, outlined: false, level: 2)
-  heading(level: 1)[Abstracto]
-  table(
-    align: (left + horizon, left),
-    columns: 2,
-    stroke: 1pt,
-    [*Título*], document-graduation-work.get().title,
-    [*Autor*], document-author.get().name,
-  )
-
-  if (problem != none) {
-    heading[Problemática]
-    problem
-  }
-
-  if (objective != none) {
-    heading[Objetivo general]
-    objective
-  }
-
-  show outline.entry: set block(spacing: 0.75em)
-  content
-
-  v(document-paragraph.get().spacing)
-
-  // Personal information
-  table(
-    columns: (auto, 1fr),
-    stroke: 1pt,
-    align: (left + horizon, left),
-    ..if (document-degree.get().program != none) {
-      ([*Carrera*], document-degree.get().program)
-    },
-    ..if (document-advisor.get().name != none) {
-      ([*Guía*], document-advisor.get().name)
-    },
-    ..if (document.keywords != ()) {
-      ([*Palabras Clave*], (document.keywords).join(", "))
-    },
-    ..if (document-author.get().email != none) {
-      ([*Correo Electrónico*], link("mailto:" + document-author.get().email))
-    },
-    ..if (document-graduation-work.get().date != none) {
-      // TODO: Using to-string might not be necessary.
-      ([*Fecha*], to-string[#document-graduation-work.get().date])
-    },
-  )
 }
 
 // Genera la página de agradecimientos del documento, si aplica.
