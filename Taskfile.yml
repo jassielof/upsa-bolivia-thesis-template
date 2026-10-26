@@ -1,12 +1,35 @@
 version: 3
 
-vars:
-  GREETING: Hello, world!
-
+env:
+  TYPST_ROOT: .
+  TYPST_FONT_PATHS: assets/fonts
 tasks:
   default:
-    desc: Genera los documentos de la tesis
+    aliases:
+      - bime-book
+      - book
     deps:
-      - spine
-  book_spine:
-  book-hard-cover
+      - thesis
+    env:
+      TYPST_FEATURES: bundle
+    desc: Genera los documentos requeridos para la BIME
+    cmds:
+      - typst compile --format bundle --pdf-standard a-3a template/book.typ
+    sources:
+      - "template/**/*.typ"
+      - template/book.typ
+    generates:
+      - template/book/**/*.pdf
+      - template/book/**/*.bib
+  thesis:
+    aliases:
+      - tfg
+    desc: Genera la tesis o documento principal del trabajo de grado
+    cmds:
+      - typst compile --pdf-standard ua-1,a-3a template/thesis.typ
+    sources:
+      - "template/**/*.typ"
+      - "assets/images/**/*"
+      - "template/**/*.typ"
+    generates:
+      - template/thesis.pdf
