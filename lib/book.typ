@@ -67,4 +67,4 @@
 
 // Art. 134: Cubierta o tapa externa
 // En la cubierta o tapa de la TL, PG, TD o documento de GE se debe colocar con letras de color negro, partiendo de la parte superior: logo de la universidad en color negro, facultad y carrera, modalidad de graduación, título del trabajo, nombre del autor, ciudad, pais y año.
-#let front-cover = title-page(is-front-cover: true)
+#let front-cover() = title-page(is-front-cover: true)

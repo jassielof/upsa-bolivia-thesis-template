@@ -1,6 +1,5 @@
 #import "../lib.typ": back-matter, front-matter, main-matter, settings
 
-#let is-web = eval(sys.inputs.at("web", default: "false"))
 
 #show: settings.with(
   fonts: (
