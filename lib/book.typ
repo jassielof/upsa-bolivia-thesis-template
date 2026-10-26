@@ -10,6 +10,10 @@
   let year = info.work-date.get()
   let volumes = info.volumes.get()
 
+  set document(
+    title: title
+  )
+
   if volumes == none {
     volumes = 1
   }

@@ -23,7 +23,9 @@
   let supervisor = info.supervisor.get()
   let city = info.city.get()
 
-  set text(weight: "bold", size: typeface.text.size + (1.5 / 12) * 1em, font: typeface.title.font)
+  set text(weight: "bold", size: typeface.title-info.size + (1.5 / 12) * 1em, font: typeface.title.font)
+  set document(title: work-title)
+  show title: set text(size: typeface.title.size, font: typeface.title.font)
   set page(margin: 1in) if is-front-cover
 
   set align(center)
@@ -47,11 +49,7 @@
     v(1fr)
   }
 
-  rect(
-    radius: 20%,
-    inset: 10pt,
-    text(font: typeface.title.font, weight: "semibold", size: 1.1em)[_«#work-title»_],
-  )
+  title()
 
   if not is-front-cover {
     v(1fr)
@@ -84,4 +82,3 @@
     pagebreak(to: "odd", weak: true)
   }
 }
-
