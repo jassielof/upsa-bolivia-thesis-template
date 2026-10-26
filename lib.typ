@@ -186,61 +186,89 @@
   body
 }
 
+// TODO: Fix outline if it's not multi-part
 #let general-outline = context {
   import "lib/info.typ"
-  let typeface = info.font.get()
 
-  show outline.entry.where(level: 1): set block(spacing: 1.5em)
-  show outline.entry.where(level: 2): set block(spacing: 1.3em)
+  let typeface = info.font.get()
+  let font-family = info.font-family.get()
+  let multi-part = info.multi-part.get()
+  let chapter-level = if multi-part { 2 } else { 1 }
+  let section-level = chapter-level + 1
+  let paragraph-level = section-level + 3
+
+  show outline.entry.where(level: 1): set block(spacing: 1.5em) if multi-part
+  show outline.entry.where(level: chapter-level): set block(spacing: 1.3em)
+
   show outline.entry.where(level: 1): set text(
-    font: typeface.title.font,
+    font: typeface.part.font,
     size: 1.2em,
     weight: 700,
     tracking: 0.05em,
-  )
-  show outline.entry.where(level: 1): it => link(
-    it.element.location(),
-    it.indented(
-      {
-        upper(it.element.supplement)
-        sym.space
-        it.prefix()
-      },
-      box(grid(
-        columns: (1fr, auto),
-        align: (left, right + horizon),
-        upper(it.body()), it.page(),
-      )),
-    ),
-  )
-  show outline.entry.where(level: 2): set text(
+  ) if multi-part
+
+  show outline.entry.where(level: 1): it => if multi-part {
+    link(
+      it.element.location(),
+      it.indented(
+        {
+          if it.element.numbering != none {
+            smallcaps(it.element.supplement)
+            sym.space
+          }
+          it.prefix()
+        },
+        box(grid(
+          columns: (1fr, auto),
+          align: (left, right + horizon),
+          upper(it.body()), it.page(),
+        )),
+      ),
+    )
+  } else {
+    link(
+      it.element.location(),
+      it.indented(
+        {
+          if it.element.numbering != none {
+            smallcaps(it.element.supplement)
+            sym.space
+          }
+          it.prefix()
+        },
+        box(grid(
+          columns: (1fr, auto),
+          align: (left, right + horizon),
+          smallcaps(it.body()),
+          text(
+            it.page(),
+            number-width: "tabular",
+            number-type: "lining",
+            stylistic-set: if font-family == "Alegreya" or font-family == "Piazzolla" { 1 } else { () },
+          ),
+        )),
+      ),
+    )
+  }
+
+  show outline.entry.where(level: chapter-level): set text(
     weight: 600,
     size: 1.1em,
-    font: typeface.title.font,
+    font: typeface.chapter.font,
     tracking: 0.025em,
   )
-  show outline.entry.where(level: 2): it => link(
-    it.element.location(),
-    it.indented(
-      {
-        smallcaps(it.element.supplement)
-        sym.space
-        it.prefix()
-      },
-      box(grid(
-        columns: (1fr, auto),
-        align: (left, right + horizon),
-        smallcaps(it.body()), it.page(),
-      )),
-    ),
-  )
-  show outline.entry.where(level: 3): set text(weight: 500)
-  show outline.entry.where(level: 4): set text(style: "italic")
+
+  show outline.entry.where(level: section-level): set text(weight: 500)
+
+  show outline.entry.where(level: section-level + 1): set text(style: "italic")
+
   outline(
-    title: [Índice General],
-    depth: 5, // Incluye partes, capítulos, secciones, subsecciones y subsubsecciones. Párrafos y demás se omiten.
-    indent: n => {
+    title: [Índice general],
+    depth: if multi-part { 5 } else { 4 },
+    indent: n => if multi-part {
       if n == 0 or n == 1 or n == 2 { 0em } else if n == 3 { 0.75em } else { n * 0.5em }
+    } else {
+      if n == 0 or n == 1 { 0em } else if n == 2 { 0.75em } else { n * 0.5em }
     },
   )
 }
