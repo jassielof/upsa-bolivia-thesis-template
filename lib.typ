@@ -1,82 +1,177 @@
-#import "@preview/hydra:0.6.3": hydra
 #import "lib/string.typ": to-string
 #import "lib/title.typ": front-cover, title-page
 #import "lib/spine.typ"
 #import "lib/default.typ"
-#import "lib/abstract.typ": indicative-abstract
+#import "lib/abstract.typ": bime as bime-abstract
 #import "lib/csl-styles.typ"
-#import "lib/state.typ": (
-  document-advisor, document-author, document-degree, document-fonts, document-graduation-work, document-institution,
-  document-paragraph,
-)
-// TODO: Remove default authoring placeholders and force user to always provide their own.
-// TODO: Add support for multi-part thesis, as it's usualy for thesis to just be multi-chapter, but not multi-part, so they must default to multi-chapter, with a boolean parameter to toggle multi-part thesis, converting first level headings to parts and second to chapters.
+
 // Define la configuración general de la plantilla.
 #let settings(
-  // Información general del autor o estudiante que realiza el trabajo de graduación.
-  //
-  // Corresponde a su nombre, número de registro y correo electrónico.
-  author-info: default.author-info,
-  // Información general de la institución educativa.
-  //
-  // Corresponde al nombre de la universidad (completo y abreviado), facultad (completo y abreviado), y la ubicación de la institución.
-  institution-info: default.institution-info,
-  // Información general del grado académico que se está optando.
-  //
-  // Corresponde al título de grado y nivel de grado.
-  degree-info: default.degree-info,
+  /// Nombre del estudiante autor del trabajo de grado.
+  author-name: none,
+  /// Correo electrónico del estudiante autor del trabajo de grado.
+  author-email: none,
+  /// Número de registro del estudiante autor del trabajo de grado.
+  author-university-id: none,
+  /// Afiliación factultativa institucional.
+  faculty: none,
+  /// Acroónimo de la facultad.
+  faculty-acronym: none,
+  /// Nivel del grado académico a optar.
+  degree-level: none,
+  /// Programa académico (carrera o especialidad) del grado a optar.
+  degree-program: none,
+  /// Nombre del/os asesor/es o guía/s del trabajo de grado.
+  supervisor: none,
   // Información general del trabajo de graduación.
   //
   // Corresponde al título del trabajo, subtítulo, su resumen o abstracto (descripción general), palabras clave, si es un plan/propuesta de investigación, fecha de presentación, y la modalidad de graduación (por ejemplo: Proyecto de Grado, Tesis, Trabajo Dirigido, etc.).
   graduation-work-info: default.graduation-work-info,
-  // Información del asesor o guía del trabajo de graduación.
-  //
-  // Corresponde a su nombre.
-  advisor-info: default.advisor-info,
-  // Fuentes a ser usadas en el documento.
-  fonts: default.fonts,
-  // Espaciado entre líneas y párrafos.
-  paragraph: default.paragraph,
-  // Si el documento va a ser publicado como PDF en la web.
-  is-web: false,
-  // Si el documento va a ser impreso a doble cara.
-  double-sided: false,
+  /// Título del trabajo de grado.
+  work-title: none,
+  /// Abstracto o resumen del trabajo de grado.
+  abstract: none,
+  /// Fecha de presentación del trabajo de grado.
+  date: none,
+  /// Palabras clave del trabajo de grado.
+  keywords: none,
+  /// Modalidad del trabajo de grado (por ejemplo: Proyecto de Grado, Tesis, Trabajo Dirigido, etc.)
+  modality: none,
+  /// Abreviatura de la modalidad del trabajo de grado (por ejemplo: PG, TL, TD, etc.)
+  modality-acronym: none,
+  /// El tipo de letra a usar.
+  typeface: "Reforma",
+  /// El formato de impresión del documento.
+  ///
+  /// - "screen" para PDF (márgenes simétricos).
+  /// - "duplex" para impresión a doble cara.
+  /// - "simplex" para impresión a una cara.
+  print-layout: "screen",
+  /// El tamaño de papel a usar. Por defecto es "us-letter" (carta), pero puede ser cambiado a "a4" (A4) si se desea.
+  paper-size: "us-letter",
+  /// Si el documento necesita ser dividido en partes (por ejemplo, tesis de doctorado), en lugar de solo capítulos.
+  multi-part: false,
+  /// Tomos o volúmenes del trabajo de grado, si aplica. Por defecto es "none".
+  volumes: none,
   body,
 ) = context {
-  document-author.update((:..default.author-info, ..author-info))
-  document-institution.update((:..default.institution-info, ..institution-info))
-  document-degree.update((:..default.degree-info, ..degree-info))
-  document-graduation-work.update((:..default.graduation-work-info, ..graduation-work-info))
-  document-advisor.update((:..default.advisor-info, ..advisor-info))
-  document-fonts.update((:..default.fonts, ..fonts))
-  document-paragraph.update((:..default.paragraph, ..paragraph))
+  import "lib/info.typ"
 
-  let author = document-author.get().name
-  let author-name = if type(author) == content {
-    to-string(author).trim()
-  } else {
-    author
-  }
+  assert(
+    abstract != none,
+    message: "El resumen o abstracto del trabajo de grado (abstract) es obligatorio.",
+  )
+  info.work-abstract.update(abstract)
+
+  assert(
+    faculty != none,
+    message: "La facultad (faculty) es obligatoria.",
+  )
+  info.faculty.update(faculty)
+
+  assert(
+    faculty-acronym != none,
+    message: "El acrónimo de la facultad (faculty-acronym) es obligatorio.",
+  )
+  info.faculty-short.update(faculty-acronym)
+
+  assert(
+    modality != none,
+    message: "La modalidad del trabajo de grado (modality) es obligatoria.",
+  )
+  info.thesis-modality.update(modality)
+
+  assert(
+    modality-acronym != none,
+    message: "El acrónimo de la modalidad del trabajo de grado (modality-acronym) es obligatorio.",
+  )
+  info.thesis-modality-short.update(modality-acronym)
+
+  info.multi-part.update(multi-part)
+  info.work-date.update(date)
+  info.volumes.update(volumes)
+
+  let paper-sizes = ("us-letter", "a4")
+  assert(
+    paper-size in paper-sizes,
+    message: "El tamaño de papel (paper-size) debe ser uno de los siguientes: "
+      + paper-sizes.join(", ", last: " o ")
+      + ".",
+  )
+
+  let typeface-options = (
+    "New Computer Modern",
+    "IBM Plex",
+    "Reforma",
+    "Alegreya",
+    "Adobe Source",
+    "TeX Gyre",
+    "Andada",
+    "Piazzolla",
+  )
+  assert(
+    typeface in typeface-options,
+    message: "El tipo de letra (typeface) debe ser uno de los siguientes: "
+      + typeface-options.join(", ", last: " o ")
+      + ".",
+  )
+
+  import "lib/typeface.typ": get as get-font
+  info.font.update(get-font(typeface))
+
+  let print-layout-options = ("screen", "duplex", "simplex")
+  assert(
+    print-layout in print-layout-options,
+    message: "El formato de impresión (print-layout) debe ser: " + print-layout-options.join(", ", last: " o ") + ".",
+  )
+
+  assert(
+    author-name != none,
+    message: "El nombre del autor (author-name) es obligatorio.",
+  )
+  assert(
+    type(author-name) == str,
+    message: "El nombre del autor (author-name) debe ser un texto (str), no: " + repr(type(author-name)) + ".",
+  )
+  info.author-name.update(author-name)
+
+  assert(
+    author-email != none,
+    message: "El correo electrónico del autor (author-email) es obligatorio.",
+  )
+  info.author-email.update(author-email)
+
+  assert(
+    author-university-id != none,
+    message: "El número de registro del autor (author-university-id) es obligatorio.",
+  )
+  info.author-uni-id.update(author-university-id)
+
+  assert(
+    work-title != none,
+    message: "El título del trabajo de grado (work-title) es obligatorio.",
+  )
+  info.work-title.update(work-title)
 
   set document(
-    title: document-graduation-work.get().title,
-    description: document-graduation-work.get().abstract,
+    title: work-title,
+    description: abstract,
     author: author-name,
-    keywords: document-graduation-work.get().keywords,
+    keywords: keywords,
   )
 
   set page(
     // Art. 142: Márgenes
     // Los márgenes serán 4 cm para el izquierdo, y 2.5 cm para el resto (incluye la numeración de página [por defecto en Typst])
-    margin: if is-web { 1in } else {
+    margin: if print-layout == "screen" { 1in } else {
       (
-        ..if double-sided { (inside: 4cm) } else { (left: 4cm) },
+        ..if print-layout == "duplex" { (inside: 4cm) } else { (left: 4cm) },
         rest: 1in,
       )
     },
     // Art. 137: Tipo de hoja
     // El tipo de hoja será papel bond blanco, de 75 g, tamaño carta (us-letter) en posición vertical.
-    paper: "us-letter",
+    paper: paper-size,
     // Art. 138: Numeración
     // La numeración de las páginas será arábiga correlativa, sin límites, en la esquina inferior derecha, para el desarrollo del trabajo; y romana con minúscula para la presentación, prólogo e índice/s.
     number-align: bottom + right,
@@ -86,10 +181,13 @@
 }
 
 #let general-outline = context {
+  import "lib/info.typ"
+  let typeface = info.font.get()
+
   show outline.entry.where(level: 1): set block(spacing: 1.5em)
   show outline.entry.where(level: 2): set block(spacing: 1.3em)
   show outline.entry.where(level: 1): set text(
-    font: document-fonts.get().title,
+    font: typeface.title.font,
     size: 1.2em,
     weight: 700,
     tracking: 0.05em,
@@ -112,7 +210,7 @@
   show outline.entry.where(level: 2): set text(
     weight: 600,
     size: 1.1em,
-    font: document-fonts.get().title,
+    font: typeface.title.font,
     tracking: 0.025em,
   )
   show outline.entry.where(level: 2): it => link(
@@ -180,7 +278,6 @@
 #let all-outlines = context {
   show outline: set heading(level: 1)
   show outline.entry: set block(spacing: 0.75em)
-  let paragraph = document-paragraph.get()
   show outline.entry: set par(leading: 0.65em)
 
   general-outline
@@ -241,6 +338,7 @@
       ([*Correo Electrónico*], link("mailto:" + document-author.get().email))
     },
     ..if (document-graduation-work.get().date != none) {
+      // TODO: Using to-string might not be necessary.
       ([*Fecha*], to-string[#document-graduation-work.get().date])
     },
   )
@@ -269,8 +367,8 @@
 #let chapter-counter = counter("chapter")
 
 #let chapter-page(it) = context {
-  let fonts = document-fonts.get()
-  let paragraph = document-paragraph.get()
+  import "lib/info.typ"
+  let typeface = info.font.get()
   if it.numbering != none and it.outlined == true {
     chapter-counter.step()
   }
@@ -278,7 +376,7 @@
   // Se recomienda que cada capítulo comience en hoja aparte y que cada uno de ellos incluya un párrafo introductorio que presente su organización e indique al lector cuál es el objetivo específico del mismo.
   // Igualmente, al terminar cada capítulo es aconsejable redactar un párrafo que contenga un pequeño resumen de lo tratado e indique además la relación del capítulo que termina con el que empieza a continuación.
   pagebreak(weak: true)
-  set par(justify: false, leading: paragraph.leading - 0.75em)
+  set par(justify: false, leading: 1.25em - 0.75em)
   set align(right)
   set block(sticky: false)
   set text(tracking: 0.05em)
@@ -358,21 +456,22 @@
   ),
   acknowledgements: none,
 ) = context {
+  import "lib/info.typ"
+  import "lib/abstract.typ"
   title-page()
 
-  let fonts = document-fonts.get()
-  let paragraph = document-paragraph.get()
+  let typeface = info.font.get()
 
   set text(
-    size: fonts.size,
-    font: fonts.body,
+    size: typeface.text.size,
+    font: typeface.text.font,
     lang: "es",
     region: "bo",
   )
 
   set par(
-    leading: paragraph.leading,
-    spacing: paragraph.spacing,
+    leading: 1.25em,
+    spacing: 1.5em,
     justify: true,
     justification-limits: (
       spacing: (min: 75%, max: 130%),
@@ -384,10 +483,10 @@
     ),
   )
 
-  show table: set text(size: fonts.size - (1 / 6 * 1em), hyphenate: true)
+  show table: set text(size: typeface.text.size - (1 / 6 * 1em), hyphenate: true)
   show table: set par(
-    spacing: paragraph.spacing - 0.5em,
-    leading: paragraph.leading - 0.25em,
+    spacing: 1.5em - 0.5em,
+    leading: 1.25em - 0.25em,
     justify: true,
   )
 
@@ -397,10 +496,10 @@
   counter(page).update(1)
   set page(numbering: "i")
 
-  show heading: set text(size: fonts.size, font: fonts.title)
-  show heading: set block(spacing: paragraph.spacing)
+  show heading: set text(size: typeface.title.size, font: typeface.title.font)
+  show heading: set block(spacing: 1.5em)
 
-  show heading.where(level: 1): set text(font: fonts.body)
+  show heading.where(level: 1): set text(font: typeface.part.font)
 
   show heading.where(level: 1): set heading(
     supplement: [Capítulo],
@@ -410,15 +509,19 @@
   show heading.where(level: 1): smallcaps
   show heading.where(level: 2): set align(center)
 
-  abstract(problem: problem, objective: objective, content: abstract-content)
+  abstract.faculty(
+    problem: problem,
+    objective: objective,
+    content-index: abstract-content,
+  )
 
   {
     set heading(numbering: none)
 
-    if document-graduation-work.get().abstract != none {
+    if info.work-abstract.get() != none {
       pagebreak(weak: true)
       heading[Resumen]
-      document-graduation-work.get().abstract
+      info.work-abstract.get()
     }
 
     if executive-summary != none {
@@ -431,10 +534,11 @@
   all-outlines
 }
 
-// Prepara el documento para el contenido principal.
+/// Prepara el documento para el contenido principal.
 #let main-matter(body) = context {
-  let fonts = document-fonts.get()
-  let paragraph = document-paragraph.get()
+  import "@preview/hydra:0.6.3": hydra
+  import "lib/info.typ"
+  let typeface = info.font.get()
 
   set page(
     numbering: "1",
@@ -444,7 +548,7 @@
         _,
         it,
       ) => text(
-        font: fonts.title,
+        font: typeface.title.font,
         tracking: 0.2em,
         fill: gray.darken(40%),
         weight: "bold",
@@ -454,15 +558,15 @@
   )
 
   set text(
-    size: fonts.size,
-    font: fonts.body,
+    size: typeface.text.size,
+    font: typeface.text.font,
     lang: "es",
     region: "bo",
   )
 
   set par(
-    leading: paragraph.leading,
-    spacing: paragraph.spacing,
+    leading: 1.25em,
+    spacing: 1.5em,
     justify: true,
     justification-limits: (
       spacing: (min: 75%, max: 130%),
@@ -479,26 +583,26 @@
     supplement: [Fórmula],
   )
 
-  show math.equation: set text(font: fonts.math)
+  show math.equation: set text(font: typeface.math.font)
 
   set figure.caption(separator: parbreak(), position: top)
   show figure: set align(left)
   show figure.where(kind: image): set block(breakable: false, sticky: true)
   show figure.where(kind: table): set block(breakable: true, sticky: false)
-  show table: set text(size: fonts.size - (1 / 6 * 1em))
+  show table: set text(size: typeface.text.size - (1 / 6 * 1em))
   show table: set par(
-    spacing: paragraph.spacing - 0.5em,
-    leading: paragraph.leading - 0.25em,
+    spacing: 1.5em - 0.5em,
+    leading: 1.25em - 0.25em,
   )
-  show raw: set text(font: fonts.mono, size: fonts.size - (1 / 12 * 1em))
+  show raw: set text(font: typeface.mono.font, size: typeface.text.size - (1 / 12 * 1em))
   show figure.where(kind: math.equation): set figure(supplement: [Fórmula])
   set figure(
-    gap: paragraph.leading,
+    gap: 1.25em,
     placement: none,
   )
 
   show figure.caption: set align(left)
-  show figure.caption: set text(font: fonts.title)
+  show figure.caption: set text(font: typeface.caption.font)
   show figure.caption: set par(first-line-indent: 0em)
   show figure.caption: it => {
     strong[#it.supplement #context it.counter.display(it.numbering)]
@@ -506,10 +610,10 @@
     emph(it.body)
   }
 
-  show quote.where(block: true): set block(spacing: paragraph.spacing)
+  show quote.where(block: true): set block(spacing: 1.5em)
   show quote: set text(style: "italic")
 
-  // TODO: Move this as an APA quote function
+  // TODO: Move this as an APA quote function and use wordometer
   show quote: it => {
     let quote-text-words = to-string(it.body).split(regex("\\s+")).filter(word => word != "").len()
 
@@ -562,10 +666,10 @@
     },
   )
 
-  show heading: set text(size: fonts.size, font: fonts.title)
-  show heading: set block(spacing: paragraph.spacing)
+  show heading: set text(size: typeface.section.size, font: typeface.section.font)
+  show heading: set block(spacing: 1.5em)
 
-  show heading.where(level: 2): set text(font: fonts.body)
+  show heading.where(level: 2): set text(font: typeface.chapter.font)
 
   show heading.where(level: 1): set heading(
     supplement: [Parte],
@@ -575,6 +679,7 @@
     supplement: [Capítulo],
   )
 
+  // TODO: Add support for multi-part thesis, as it's usualy for thesis to just be multi-chapter, but not multi-part, so they must default to multi-chapter, with a boolean parameter to toggle multi-part thesis, converting first level headings to parts and second to chapters.
   show heading.where(level: 1): it => part-page(it)
   show heading.where(level: 2): it => chapter-page(it)
 
@@ -597,7 +702,9 @@
 
 // Prepara el documento para las páginas finales, incluyendo anexos, glosario, etc.
 #let back-matter(body) = context {
-  let document-graduation-work = document-graduation-work.get()
+  import "lib/info.typ"
+  let is-proposal = info.proposal.get()
+
   // Art 147: Citas y notas
   // Las citas y notas bibliográficas deberán ceñirse al estilo de referenciación bibliográfica establecido por la Facultad.
   show bibliography: bib-it => {
@@ -623,11 +730,11 @@
     hanging-indent: 0.5in,
   )
 
-  show heading.where(level: 2): set heading(supplement: [Anexo]) if document-graduation-work.is-plan == false
-  set heading(supplement: [Anexo], numbering: "A.a.") if document-graduation-work.is-plan == true
+  show heading.where(level: 2): set heading(supplement: [Anexo]) if is-proposal == false
+  set heading(supplement: [Anexo], numbering: "A.a.") if is-proposal == true
 
   show bibliography: set heading(
-    level: if document-graduation-work.is-plan == true { 3 } else { 2 },
+    level: if is-proposal == true { 3 } else { 2 },
     numbering: none,
     outlined: false,
     bookmarked: true,
@@ -645,7 +752,7 @@
         numbering("a.1.", ..pos.slice(2))
       }
     },
-  ) if document-graduation-work.is-plan == false
+  ) if is-proposal == false
 
   set heading(
     numbering: (..args) => {
@@ -658,9 +765,9 @@
         numbering("A.a.1.", ..pos.slice(2))
       }
     },
-  ) if document-graduation-work.is-plan == true
+  ) if is-proposal == true
 
-  if document-graduation-work.is-plan == true {
+  if is-proposal == true {
     counter(heading).update(0)
   }
 

@@ -1,5 +1,4 @@
 #import "@preview/datify:1.0.1": custom-date-format
-
 #let fonts = (
   size: 12pt,
   title: "TeX Gyre Heros",
@@ -7,6 +6,8 @@
   mono: "TeX Gyre Cursor",
   math: "TeX Gyre Termes Math",
 )
+
+#let adobe-source-typeface = ()
 
 #let paragraph = (
   spacing: 2em,
@@ -19,25 +20,25 @@
     short: [UPSA],
   ),
   faculty: (
-    long: [FAI: Facultad de Ingeniería],
-    short: [FAI],
+    long: none,
+    short: none,
   ),
   location: [Santa Cruz de la Sierra, Bolivia],
 )
 
 #let degree-info = (
-  program: [Ingeniería de Sistemas],
-  level: [Licenciatura],
+  program: none,
+  level: none,
 )
 
 #let author-info = (
-  name: [Nombre y apellido(s) del autor],
-  id: "YYYYXXXXXX",
-  email: "author@estudiantes.upsa.edu.bo",
+  name: none,
+  id: none,
+  email: none,
 )
 
 #let advisor-info = (
-  name: [Nombre y Apellido/s del Asesor],
+  name: none,
 )
 
 #let graduation-work-info = (

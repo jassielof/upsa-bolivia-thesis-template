@@ -1,8 +1,3 @@
-#import "state.typ": (
-  document-advisor, document-author, document-degree, document-fonts, document-graduation-work, document-institution,
-  document-paragraph,
-)
-
 #let uni-logo = image(
   "../assets/images/upsa-logo-green.svg",
   width: 50%,
@@ -13,71 +8,78 @@
 //
 // En la carátula o tapa interna se debe colocar lo mismo que en la tapa (portada externa) con la sola adición de: "{modalidad de grado} para optar al grado de {grado} en {carrera}".
 #let title-page(is-front-cover: false) = context {
-  let fonts = document-fonts.get()
-  let author-info = document-author.get()
-  let institution-info = document-institution.get()
-  let degree-info = document-degree.get()
-  let graduation-work-info = document-graduation-work.get()
-  let advisor-info = document-advisor.get()
+  import "info.typ"
 
-  set text(weight: "bold", size: fonts.size + (1.5 / 12) * 1em, font: fonts.title)
+  let typeface = info.font.get()
+  let author = info.author-name.get()
+  let faculty = info.faculty.get()
+  let major = info.degree-program.get()
+  let is-proposal = info.proposal.get()
+  let degree-level = info.degree-level.get()
+  let modality = info.thesis-modality.get()
+  let year = info.work-date.get()
+  let work-title = info.work-title.get()
+  let author-id = info.author-uni-id.get()
+  let supervisor = info.supervisor.get()
+  let city = info.city.get()
+
+  set text(weight: "bold", size: typeface.text.size + (1.5 / 12) * 1em, font: typeface.title.font)
   set page(margin: 1in) if is-front-cover
 
   set align(center)
 
   uni-logo
   v(1fr)
-  institution-info.faculty.long
+  faculty
   parbreak()
-  degree-info.program
+  major
   v(1fr)
 
-  if graduation-work-info.is-plan {
+  if is-proposal {
     [Plan de trabajo de graduación]
     v(1fr)
   }
 
-  if graduation-work-info.modality != none {
+  if modality != none {
     [Modalidad de graduación]
     parbreak()
-    graduation-work-info.modality
+    modality
     v(1fr)
   }
 
   rect(
     radius: 20%,
     inset: 10pt,
-    text(font: fonts.body, weight: "semibold", size: 1.1em)[_«#graduation-work-info.title»_],
+    text(font: typeface.title.font, weight: "semibold", size: 1.1em)[_«#work-title»_],
   )
 
   if not is-front-cover {
     v(1fr)
     [
-      #graduation-work-info.modality para optar por el grado de
-
-      «#degree-info.level en #degree-info.program»
+      #modality para optar por el grado de \
+      «#degree-level en #major»
     ]
   }
 
   v(1fr)
 
-  author-info.name
+  author
 
-  if author-info.id != none and not is-front-cover [
+  if author-id != none and not is-front-cover [
     #parbreak()
-    Reg.: #author-info.id
+    Reg.: #author-id
   ]
 
   v(1fr)
 
-  if advisor-info.name != none {
-    advisor-info.name
+  if supervisor != none {
+    supervisor
     parbreak()
   }
 
-  institution-info.location
+  city
   parbreak()
-  [#graduation-work-info.date]
+  repr(year)
   if not is-front-cover {
     pagebreak(to: "odd", weak: true)
   }

@@ -1,17 +1,14 @@
-#import "state.typ": document-fonts, document-graduation-work, document-institution
+#import "info.typ"
 
-// El lomo del libro (art. 135 del Reglamento de Graduación)
-#let cover(
-  // El número de volúmenes/tomos del libro, esto debe establecerse solo cuando el libro es una obra de varios volúmenes.
-  volumes: none,
-  // El año de publicación del libro.
-  year: datetime.today().year(),
-) = context {
-  let fonts = document-fonts.get()
-  let university = document-institution.get().university.short
-  let modality = document-graduation-work.get().modality-abbr
-  let title = document-graduation-work.get().title
-  let volumes = volumes
+/// El lomo del libro (art. 135 del Reglamento de Graduación)
+#let cover() = context {
+  let typeface = info.font.get()
+
+  let university = info.university-short.get()
+  let modality = info.thesis-modality-short.get()
+  let title = info.work-title.get()
+  let year = info.work-date.get()
+  let volumes = info.volumes.get()
 
   if volumes == none {
     volumes = 1
@@ -24,11 +21,13 @@
       width: 2in,
       margin: 1cm,
     )
+
     set text(
-      font: fonts.body,
+      font: typeface.title-info.font,
       weight: "bold",
       hyphenate: false,
     )
+
     set par(justify: false)
     show grid: set block(breakable: false)
 
@@ -45,7 +44,7 @@
         -90deg,
         reflow: true,
         box(
-          text(title, font: fonts.title, size: 22pt, weight: "semibold"),
+          text(title, font: typeface.title.font, size: 22pt, weight: "bold"),
           width: 90%,
         ),
       ),
