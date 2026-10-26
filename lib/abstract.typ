@@ -53,7 +53,7 @@
       ([Guía], supervisor)
     },
     ..if keywords != none {
-      ([Palabras clave], keywords)
+      ([Palabras clave], keywords.join(", "))
     },
     ..if email != none {
       ([Correo electrónico], email)

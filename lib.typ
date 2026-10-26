@@ -2,6 +2,7 @@
 #import "lib/info.typ": print-layout as print-layout-state
 #import "lib/title.typ": title-page
 #import "lib/book.typ": front-cover as book-front-cover, spine-cover as book-spine-cover
+#import "lib/biblatex.typ": generate as get-biblatex
 #import "lib/abstract.typ": bime as bime-abstract
 #import "lib/csl-styles.typ"
 
@@ -53,6 +54,9 @@
 ) = context {
   import "lib/info.typ"
 
+  info.supervisor.update(supervisor)
+  info.degree-program.update(degree-program)
+  info.degree-level.update(degree-level)
   assert(
     abstract != none,
     message: "El resumen o abstracto del trabajo de grado (abstract) es obligatorio.",
@@ -150,6 +154,8 @@
     message: "El título del trabajo de grado (work-title) es obligatorio.",
   )
   info.work-title.update(work-title)
+
+  info.keywords.update(keywords)
 
   set document(
     title: work-title,
