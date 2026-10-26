@@ -1,6 +1,4 @@
-#import "lib/string.typ": to-string
 #import "lib/info.typ": print-layout as print-layout-state
-#import "lib/title.typ": title-page
 #import "lib/book.typ": front-cover as book-front-cover, spine-cover as book-spine-cover
 #import "lib/biblatex.typ": generate as get-biblatex
 #import "lib/abstract.typ": bime as bime-abstract
@@ -98,6 +96,7 @@
       + paper-sizes.join(", ", last: " o ")
       + ".",
   )
+  info.paper-size.update(paper-size)
 
   let typeface-options = (
     "New Computer Modern",
@@ -408,6 +407,8 @@
 ) = context {
   import "lib/info.typ"
   import "lib/abstract.typ"
+  import "lib/title.typ": title-page
+
   title-page()
 
   let typeface = info.font.get()
