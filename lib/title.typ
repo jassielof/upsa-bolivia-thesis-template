@@ -36,9 +36,7 @@
   let title-scale = if is-front-cover { 1.14 } else { 1.0 }
   let info-size = typeface.title-info.size * meta-scale
 
-  set text(
-    ..typeface.title-info,
-  )
+  set text(..typeface.title-info)
 
   show title: set text(
     ..typeface.title,

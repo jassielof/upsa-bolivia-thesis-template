@@ -1,3 +1,22 @@
+#let ibm-plex = (
+  text: (
+    font: "IBM Plex Serif",
+    weight: "text",
+    size: 11pt,
+  ),
+  math: (
+    font: "IBM Plex Math",
+  ),
+  mono: (
+    font: "IBM Plex Mono",
+    weight: "text",
+    size: 9.5pt,
+  ),
+)
+
+#let new-computer-modern = ()
+#let tex-gyre = ()
+
 #let reforma = (
   text: (
     font: "Reforma 1918",
@@ -118,9 +137,7 @@
 #let alegreya = (
   text: (
     font: "Alegreya",
-    weight: "regular",
     size: 11pt,
-    style: "normal",
   ),
   title: (
     font: "Alegreya",
@@ -136,10 +153,10 @@
     font: "Alegreya",
     weight: "bold",
     size: 24pt,
+    stylistic-set: 1,
   ),
   chapter: (
     font: "Alegreya Sans",
-    weight: "bold",
     size: 18pt,
   ),
   section: (
@@ -301,6 +318,12 @@
   piazzolla
 } else if name == "Andada" {
   andada
+} else if name == "IBM Plex" {
+  ibm-plex
+} else if name == "New Computer Modern" {
+  new-computer-modern
+} else if name == "TeX Gyre" {
+  tex-gyre
 } else {
   reforma
 }

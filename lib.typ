@@ -117,6 +117,7 @@
 
   import "lib/typeface.typ": get as get-font
   info.font.update(get-font(typeface))
+  info.font-family.update(typeface)
 
   let print-layout-options = ("screen", "duplex", "simplex")
   let print-layout = print-layout-state.final()
@@ -317,7 +318,9 @@
 
 #let chapter-page(it) = context {
   import "lib/info.typ"
+
   let typeface = info.font.get()
+  let font-family = info.font-family.get()
   if it.numbering != none and it.outlined == true {
     chapter-counter.step()
   }
@@ -336,7 +339,10 @@
       fill: gray.darken(40%),
     )
     #it.supplement
-    #text(size: 1.25em, counter(heading).display(it.numbering))
+    #text(
+      size: 1.25em,
+      counter(heading).display(it.numbering),
+    )
   ]
 
   block(
@@ -352,9 +358,11 @@
 }
 
 #let part-page(it) = context {
+  import "lib/info.typ"
   pagebreak(weak: true)
   set par(justify: false)
   set page(numbering: none, header: none)
+  let typeface = info.font.get()
 
   set align(center)
 
@@ -371,6 +379,7 @@
 
   if it.numbering != none and it.outlined == true {
     text(
+      ..typeface.part,
       size: 3.5em,
       weight: "black",
     )[#counter(heading).display(it.numbering)]
@@ -396,7 +405,6 @@
   dedication: none,
   abstract-content: outline(
     target: heading.where(
-      // level: 2,
       outlined: true,
       supplement: [Capítulo],
     ),
@@ -412,13 +420,16 @@
   title-page()
 
   let typeface = info.font.get()
+  let font-family = info.font-family.get()
 
   set text(
-    size: typeface.text.size,
-    font: typeface.text.font,
+    ..typeface.text,
     lang: "es",
     region: "bo",
   )
+
+  show heading: set text(size: typeface.text.size)
+  show heading: set block(spacing: 1.5em)
 
   set par(
     leading: 1.25em,
@@ -445,12 +456,11 @@
   acknowledgements-page(acknowledgements)
 
   counter(page).update(1)
-  set page(numbering: "i")
-
-  show heading: set text(size: typeface.title.size, font: typeface.title.font)
-  show heading: set block(spacing: 1.5em)
-
-  show heading.where(level: 1): set text(font: typeface.part.font)
+  set page(numbering: "i", footer: context {
+    set text(stylistic-set: 1) if font-family == "Alegreya" or font-family == "Piazzolla"
+    set align(right)
+    lower(counter(page).display("i"))
+  })
 
   show heading.where(level: 1): set heading(
     supplement: [Capítulo],
@@ -489,7 +499,12 @@
 #let main-matter(body) = context {
   import "@preview/hydra:0.6.3": hydra
   import "lib/info.typ"
+
   let typeface = info.font.get()
+  let font-family = info.font-family.get()
+  let multi-part = info.multi-part.get()
+  let chapter-level = if multi-part { 2 } else { 1 }
+  let section-level = chapter-level + 1
 
   set page(
     numbering: "1",
@@ -596,6 +611,12 @@
   // Existen encabezados principales y secundarios, los cuales deberán estar escritos y ubicados apropiadamente, según una escala jerárquica sistemática durante todo el desarrollo del texto. Para señalar los encabezados podrá utilizarse el sistema decimal o alfanumérico.
   set heading(
     numbering: (..args) => {
+      set text(
+        stylistic-set: if font-family == "Alegreya" or font-family == "Piazzolla" { 1 } else { () },
+        number-type: "lining",
+        number-width: "tabular",
+      )
+
       if args.pos().len() == 1 {
         // Level 1: Roman numerals for Parts.
         numbering("I", ..args)
@@ -620,25 +641,39 @@
   show heading: set text(size: typeface.section.size, font: typeface.section.font)
   show heading: set block(spacing: 1.5em)
 
-  show heading.where(level: 2): set text(font: typeface.chapter.font)
+  show heading.where(level: chapter-level): set text(
+    font: typeface.chapter.font,
+  )
 
+  show heading.where(level: chapter-level): set heading(
+    supplement: [Capítulo],
+  )
   show heading.where(level: 1): set heading(
-    supplement: [Parte],
+    supplement: if multi-part [Parte] else [Capítulo],
   )
 
   show heading.where(level: 2): set heading(
-    supplement: [Capítulo],
+    supplement: if multi-part [Capítulo] else [Sección],
   )
 
   // TODO: Add support for multi-part thesis, as it's usualy for thesis to just be multi-chapter, but not multi-part, so they must default to multi-chapter, with a boolean parameter to toggle multi-part thesis, converting first level headings to parts and second to chapters.
-  show heading.where(level: 1): it => part-page(it)
-  show heading.where(level: 2): it => chapter-page(it)
+  show heading.where(level: 1): it => if multi-part {
+    part-page(it)
+  } else {
+    chapter-page(it)
+  }
 
-  show heading.where(level: 2): smallcaps
-  show heading.where(level: 3): set align(center)
-  show heading.where(level: 5): emph
-  show heading.where(level: 6): it => [#it.body.]
-  show heading.where(level: 7): it => [_#it.body._]
+  show heading.where(level: 2): it => if multi-part {
+    chapter-page(it)
+  } else {
+    it
+  }
+
+  show heading.where(level: section-level): smallcaps
+  show heading.where(level: section-level + 1): set align(center)
+  show heading.where(level: section-level + 3): emph
+  show heading.where(level: section-level + 4): it => [#it.body.]
+  show heading.where(level: section-level + 5): it => [_#it.body._]
 
   show figure.where(kind: raw): set figure(placement: none)
   show figure.where(kind: raw): set block(breakable: true, sticky: false)

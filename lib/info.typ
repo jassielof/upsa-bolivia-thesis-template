@@ -22,4 +22,5 @@
 #let keywords = state("keywords", none)
 #let print-layout = state("print-layout", "screen")
 #let font = state("font", typeface.default)
+#let font-family = state("font-family", "Reforma")
 #let paper-size = state("paper-size", "us-letter")
