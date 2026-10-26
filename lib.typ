@@ -505,6 +505,7 @@
   let multi-part = info.multi-part.get()
   let chapter-level = if multi-part { 2 } else { 1 }
   let section-level = chapter-level + 1
+  let paragraph-level = section-level + 3
 
   set page(
     numbering: "1",
@@ -514,7 +515,7 @@
         _,
         it,
       ) => text(
-        font: typeface.title.font,
+        font: typeface.chapter.font,
         tracking: 0.2em,
         fill: gray.darken(40%),
         weight: "bold",
@@ -524,10 +525,9 @@
   )
 
   set text(
-    size: typeface.text.size,
-    font: typeface.text.font,
     lang: "es",
     region: "bo",
+    ..typeface.text,
   )
 
   set par(
@@ -617,28 +617,45 @@
         number-width: "tabular",
       )
 
-      if args.pos().len() == 1 {
-        // Level 1: Roman numerals for Parts.
-        numbering("I", ..args)
-      } else if args.pos().len() == 2 {
-        // Level 2: Use the chapter state counter and increment it.
-        // chapter-counter.display("I")
-        numbering("I", chapter-counter.get().first())
-      } else if args.pos().len() == 3 or args.pos().len() == 4 or args.pos().len() == 5 {
-        // Level 3+: Use the chapter number followed by the position within that chapter.
-        numbering(
-          "1.1.",
-          // ..chapter-counter.get(),
-          ..args.pos().slice(2),
-        )
+      if multi-part {
+        if args.pos().len() == 1 {
+          // Level 1: Roman numerals for Parts.
+          numbering("I", ..args)
+        } else if args.pos().len() == 2 {
+          // Level 2: Use the chapter state counter and increment it.
+          // chapter-counter.display("I")
+          numbering("I", chapter-counter.get().first())
+        } else if args.pos().len() == 3 or args.pos().len() == 4 or args.pos().len() == 5 {
+          // Level 3+: Use the chapter number followed by the position within that chapter.
+          numbering(
+            "1.1.",
+            // ..chapter-counter.get(),
+            ..args.pos().slice(2),
+          )
+        } else {
+          // For the rest of headings, no
+          none
+        }
       } else {
-        // For the rest of headings, no
-        none
+        if args.pos().len() == 1 {
+          // Level 1: Use the chapter state counter and increment it.
+          numbering("I", chapter-counter.get().first())
+        } else if args.pos().len() == 2 or args.pos().len() == 3 or args.pos().len() == 4 {
+          // Level 2+: Use the chapter number followed by the position within that chapter.
+          numbering(
+            "1.1.",
+            // ..chapter-counter.get(),
+            ..args.pos().slice(1),
+          )
+        } else {
+          // For the rest of headings, no
+          none
+        }
       }
     },
   )
 
-  show heading: set text(size: typeface.section.size, font: typeface.section.font)
+  show heading: set text(size: typeface.text.size)
   show heading: set block(spacing: 1.5em)
 
   show heading.where(level: chapter-level): set text(
@@ -656,7 +673,6 @@
     supplement: if multi-part [Capítulo] else [Sección],
   )
 
-  // TODO: Add support for multi-part thesis, as it's usualy for thesis to just be multi-chapter, but not multi-part, so they must default to multi-chapter, with a boolean parameter to toggle multi-part thesis, converting first level headings to parts and second to chapters.
   show heading.where(level: 1): it => if multi-part {
     part-page(it)
   } else {
@@ -669,11 +685,12 @@
     it
   }
 
-  show heading.where(level: section-level): smallcaps
-  show heading.where(level: section-level + 1): set align(center)
-  show heading.where(level: section-level + 3): emph
-  show heading.where(level: section-level + 4): it => [#it.body.]
-  show heading.where(level: section-level + 5): it => [_#it.body._]
+  show heading.where(level: chapter-level): smallcaps
+  show heading.where(level: section-level): set align(center)
+  show heading.where(level: section-level + 2): set text(weight: "bold")
+  show heading.where(level: section-level + 3): set text(style: "italic")
+  show heading.where(level: paragraph-level): it => box[#it.body.]
+  show heading.where(level: paragraph-level + 1): it => box(emph[#it.body.])
 
   show figure.where(kind: raw): set figure(placement: none)
   show figure.where(kind: raw): set block(breakable: true, sticky: false)
@@ -686,10 +703,15 @@
   body
 }
 
-// Prepara el documento para las páginas finales, incluyendo anexos, glosario, etc.
+// TODO: Fix appendices numbering.
+/// Prepara el documento para las páginas finales, incluyendo anexos, glosario, etc.
 #let back-matter(body) = context {
   import "lib/info.typ"
+
   let is-proposal = info.proposal.get()
+  let font-family = info.font-family.get()
+  let typeface = info.font.get()
+  let multi-part = info.multi-part.get()
 
   // Art 147: Citas y notas
   // Las citas y notas bibliográficas deberán ceñirse al estilo de referenciación bibliográfica establecido por la Facultad.
@@ -716,11 +738,11 @@
     hanging-indent: 0.5in,
   )
 
-  show heading.where(level: 2): set heading(supplement: [Anexo]) if is-proposal == false
-  set heading(supplement: [Anexo], numbering: "A.a.") if is-proposal == true
+  show heading.where(level: 2): set heading(supplement: [Anexo]) if multi-part
+  set heading(supplement: [Anexo], numbering: "A.a.") if not multi-part
 
   show bibliography: set heading(
-    level: if is-proposal == true { 3 } else { 2 },
+    level: if multi-part { 2 } else { 1 },
     numbering: none,
     outlined: false,
     bookmarked: true,
@@ -738,7 +760,7 @@
         numbering("a.1.", ..pos.slice(2))
       }
     },
-  ) if is-proposal == false
+  ) if multi-part
 
   set heading(
     numbering: (..args) => {
@@ -751,9 +773,9 @@
         numbering("A.a.1.", ..pos.slice(2))
       }
     },
-  ) if is-proposal == true
+  ) if not multi-part
 
-  if is-proposal == true {
+  if not multi-part {
     counter(heading).update(0)
   }
 
