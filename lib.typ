@@ -1,6 +1,6 @@
 #import "lib/string.typ": to-string
 #import "lib/title.typ": front-cover, title-page
-#import "lib/spine.typ"
+#import "lib/book.typ" as spine
 #import "lib/default.typ"
 #import "lib/abstract.typ": bime as bime-abstract
 #import "lib/csl-styles.typ"
