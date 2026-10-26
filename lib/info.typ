@@ -20,5 +20,5 @@
 #let proposal = state("proposal", false)
 #let volumes = state("volumes", none)
 #let keywords = state("keywords", none)
-
+#let print-layout = state("print-layout", "screen")
 #let font = state("font", typeface.default)

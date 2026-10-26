@@ -1,4 +1,5 @@
 #import "lib/string.typ": to-string
+#import "lib/info.typ": print-layout as print-layout-state
 #import "lib/title.typ": title-page
 #import "lib/book.typ": front-cover as book-front-cover, spine-cover as book-spine-cover
 #import "lib/abstract.typ": bime as bime-abstract
@@ -115,10 +116,12 @@
   info.font.update(get-font(typeface))
 
   let print-layout-options = ("screen", "duplex", "simplex")
+  let print-layout = print-layout-state.final()
   assert(
     print-layout in print-layout-options,
     message: "El formato de impresión (print-layout) debe ser: " + print-layout-options.join(", ", last: " o ") + ".",
   )
+  print-layout-state.update(print-layout)
 
   assert(
     author-name != none,
@@ -158,7 +161,9 @@
   set page(
     // Art. 142: Márgenes
     // Los márgenes serán 4 cm para el izquierdo, y 2.5 cm para el resto (incluye la numeración de página [por defecto en Typst])
-    margin: if print-layout == "screen" { 1in } else {
+    margin: if print-layout == "screen" and target() == "paged" {
+      1in
+    } else {
       (
         ..if print-layout == "duplex" { (inside: 4cm) } else { (left: 4cm) },
         rest: 1in,
