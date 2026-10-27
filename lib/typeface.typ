@@ -1,6 +1,7 @@
 #let ibm-plex = (
   text: (
     font: "IBM Plex Serif",
+    // TODO: Text doesn't exist in Typst
     weight: "text",
     size: 11pt,
   ),
