@@ -3,6 +3,8 @@
 #let to-string(content) = {
   if type(content) == str {
     content
+  } else if type(content) == int {
+    content
   } else if content.has("text") {
     if type(content.text) == str {
       content.text
@@ -195,7 +197,7 @@
     author: final-author,
     title: work-title,
     type: thesis-type,
-    institution: info.faculty.get() + ", " + info.university.get(),
+    institution: info.university.get(),
     department: info.faculty.get(),
     location: info.city.get(),
     date: year,
@@ -203,7 +205,8 @@
     language: "spanish",
     abstract: info.work-abstract.get(),
     keywords: formatted-keywords,
-    degree: info.degree-program.get(),
+    degree: info.degree-level.get() + " en " + info.degree-program.get(),
+    pagetotal: info.work-pages.final(),
     supervisor: info.supervisor.get(),
   )
 

@@ -810,6 +810,8 @@
   chapter-counter.update(0)
 
   body
+
+  context { info.work-pages.update(here().page()) }
 }
 
 // Artículos irrelevantes o sin efecto directo a la planilla.

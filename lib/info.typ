@@ -24,3 +24,4 @@
 #let font = state("font", typeface.default)
 #let font-family = state("font-family", "Reforma")
 #let paper-size = state("paper-size", "us-letter")
+#let work-pages = state("work-pages", 0)
