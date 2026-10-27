@@ -1,0 +1,120 @@
+#import "toc.typ": all-outlines
+#import "main-matter.typ": chapter-page
+
+// Genera la página de agradecimientos del documento, si aplica.
+#let acknowledgements-page(body) = {
+  if body == none {
+    return
+  }
+
+  body
+}
+
+// Genera la página dedicatoria del documento, si aplica.
+//
+// Se recomienda que la dedicatoria sea breve y concisa (1 página).
+#let dedication-page(body) = {
+  if body == none {
+    return
+  }
+
+  body
+}
+
+// Genera las páginas preliminares del documento, incluyendo carátula, índices, abstracto, etc.
+#let front-matter(
+  problem: none,
+  objective: none,
+  executive-summary: none,
+  dedication: none,
+  abstract-content: outline(
+    target: heading.where(
+      outlined: true,
+      supplement: [Capítulo],
+    ),
+    indent: 0em,
+    title: [Contenido],
+  ),
+  acknowledgements: none,
+) = context {
+  import "info.typ"
+  import "abstract.typ"
+  import "title.typ": title-page
+
+  title-page()
+
+  let typeface = info.font.get()
+  let font-family = info.font-family.get()
+
+  set text(
+    ..typeface.text,
+    lang: "es",
+    region: "bo",
+  )
+
+  show heading: set text(size: typeface.text.size)
+  show heading: set block(spacing: 1.5em)
+
+  set par(
+    leading: 1.25em,
+    spacing: 1.5em,
+    justify: true,
+    justification-limits: (
+      spacing: (min: 75%, max: 130%),
+      tracking: (min: -0.008em, max: 0.015em),
+    ),
+    first-line-indent: (
+      amount: 0in,
+      all: true,
+    ),
+  )
+
+  show table: set text(size: typeface.text.size - (1 / 6 * 1em), hyphenate: true)
+  show table: set par(
+    spacing: 1.5em - 0.5em,
+    leading: 1.25em - 0.25em,
+    justify: true,
+  )
+
+  dedication-page(dedication)
+  acknowledgements-page(acknowledgements)
+
+  counter(page).update(1)
+  set page(numbering: "i", footer: context {
+    set text(stylistic-set: 1) if font-family == "Alegreya" or font-family == "Piazzolla"
+    set align(right)
+    lower(counter(page).display("i"))
+  })
+
+  show heading.where(level: 1): set heading(
+    supplement: [Capítulo],
+  )
+
+  show heading.where(level: 1): it => chapter-page(it)
+  show heading.where(level: 1): smallcaps
+  show heading.where(level: 2): set align(center)
+
+  abstract.faculty(
+    problem: problem,
+    objective: objective,
+    content-index: abstract-content,
+  )
+
+  {
+    set heading(numbering: none)
+
+    if info.work-abstract.get() != none {
+      pagebreak(weak: true)
+      heading[Resumen]
+      info.work-abstract.get()
+    }
+
+    if executive-summary != none {
+      pagebreak(weak: true)
+      heading[Resumen ejecutivo]
+      executive-summary
+    }
+  }
+
+  all-outlines
+}
