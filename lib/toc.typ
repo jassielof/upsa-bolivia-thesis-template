@@ -1,78 +1,45 @@
-// TODO: Fix outline if it's not multi-part
+// Shared by the general and appendix outlines.
+#let chapter-outline-entry(it) = context {
+  import "info.typ"
+  let typeface = info.font.get()
+  // Classify by semantic role, not absolute depth: front/back matter
+  // chapters stay at level 1 even when main-matter chapters are level 2.
+  let el = it.element
+  let is-part = el.supplement == [Parte]
+  let is-chapter = el.supplement in ([Capítulo], [Anexo])
+  if is-part or is-chapter {
+    set block(spacing: if is-part { 1.5em } else { 1.3em })
+    set text(
+      font: if is-part { typeface.part.font } else { typeface.chapter.font },
+      size: if is-part { 1.2em } else { 1.1em },
+      weight: if is-part { 700 } else { 600 },
+      tracking: 0.025em,
+    )
+    link(el.location(), block(grid(
+      columns: (auto, 1fr, auto), column-gutter: 0.5em,
+      align: (left, left, right + horizon),
+      {
+        if el.numbering != none {
+          smallcaps(el.supplement)
+          sym.space
+        }
+        it.prefix()
+      },
+      if is-part { upper(it.body()) } else { smallcaps(it.body()) },
+      text(it.page(), number-width: "tabular", number-type: "lining"),
+    )))
+  } else {
+    it
+  }
+
+}
+
 #let general-outline = context {
   import "info.typ"
 
-  let typeface = info.font.get()
-  let font-family = info.font-family.get()
   let multi-part = info.multi-part.get()
-  let chapter-level = if multi-part { 2 } else { 1 }
-  let section-level = chapter-level + 1
-  let paragraph-level = section-level + 3
 
-  show outline.entry.where(level: 1): set block(spacing: 1.5em) if multi-part
-  show outline.entry.where(level: chapter-level): set block(spacing: 1.3em)
-
-  show outline.entry.where(level: 1): set text(
-    font: typeface.part.font,
-    size: 1.2em,
-    weight: 700,
-    tracking: 0.05em,
-  ) if multi-part
-
-  show outline.entry.where(level: 1): it => if multi-part {
-    link(
-      it.element.location(),
-      it.indented(
-        {
-          if it.element.numbering != none {
-            smallcaps(it.element.supplement)
-            sym.space
-          }
-          it.prefix()
-        },
-        box(grid(
-          columns: (1fr, auto),
-          align: (left, right + horizon),
-          upper(it.body()), it.page(),
-        )),
-      ),
-    )
-  } else {
-    link(
-      it.element.location(),
-      it.indented(
-        {
-          if it.element.numbering != none {
-            smallcaps(it.element.supplement)
-            sym.space
-          }
-          it.prefix()
-        },
-        box(grid(
-          columns: (1fr, auto),
-          align: (left, right + horizon),
-          smallcaps(it.body()),
-          text(
-            it.page(),
-            number-width: "tabular",
-            number-type: "lining",
-            stylistic-set: if font-family == "Alegreya" or font-family == "Piazzolla" { 1 } else { () },
-          ),
-        )),
-      ),
-    )
-  }
-
-  show outline.entry.where(level: chapter-level): set text(
-    weight: 600,
-    size: 1.1em,
-    font: typeface.chapter.font,
-    tracking: 0.025em,
-  )
-
-  show outline.entry.where(level: section-level): set text(weight: 500)
-
-  show outline.entry.where(level: section-level + 1): set text(style: "italic")
+  show outline.entry: chapter-outline-entry
 
   outline(
     title: [Índice general],
@@ -115,14 +82,20 @@
 
 // Genera el índice de anexos si existen.
 #let appendix-outline = context {
+  show outline.entry: chapter-outline-entry
   if (query(heading.where(supplement: [Anexo])).len() != 0) {
-    outline(title: [Índice de anexos], target: selector(heading.where(supplement: [Anexo])))
+    outline(title: [Índice de anexos], target: heading.where(
+      supplement: [Anexo], level: 1, outlined: true,
+    ))
   }
 }
 
 // Genera todos los índices del documento en su respectivo orden,
 #let all-outlines = context {
+  import "main-matter.typ": chapter-page
+  show heading.where(level: 1): it => smallcaps(chapter-page(it))
   show outline: set heading(level: 1)
+  show outline.entry: set text(number-type: "lining", number-width: "tabular")
   show outline.entry: set block(spacing: 0.75em)
   show outline.entry: set par(leading: 0.65em)
 

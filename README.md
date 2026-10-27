@@ -40,7 +40,9 @@ Los ejemplos iniciales se basan en experiencias concretas de proyectos de grado:
 
 Estas estructuras son ejemplos de aplicación, no modelos obligatorios para todas las carreras.
 
-Se prevé establecer una organización por capítulos como opción predeterminada y permitir el uso de partes cuando resulte pertinente. La configuración de partes permanece pendiente de ajustes técnicos y aclaración académica.
+La organización predeterminada es por capítulos: `=` siempre inicia un capítulo y `==` una sección. Para agrupar capítulos en partes, importa `part`, activa `multi-part: true` en `settings` y llama explícitamente a `#part[Título de la parte]` dentro de `main-matter`. Los capítulos continúan numerándose entre partes; no es necesario cambiar los encabezamientos del contenido.
+
+Las páginas preliminares y la bibliografía conservan el estilo de capítulo. `back-matter` vuelve al nivel superior y reinicia los anexos en A, B, C; sus secciones se numeran A.a., A.b., etc. El índice general incluye las partes y los capítulos, y el índice de anexos enumera solamente los anexos. `part()` requiere que `multi-part` esté activado.
 
 ## Tipografía
 

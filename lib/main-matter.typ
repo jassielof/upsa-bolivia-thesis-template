@@ -1,48 +1,43 @@
-#let chapter-counter = counter("chapter")
+#import "biblatex.typ": to-string
 
-#let chapter-page(it) = context {
-  import "info.typ"
-
-  let typeface = info.font.get()
-  let font-family = info.font-family.get()
-  if it.numbering != none and it.outlined == true {
-    chapter-counter.step()
-  }
+#let chapter-page(it, alignment: left) = context {
   // Art. 143: Inicio y conclusión del capítulo
   // Se recomienda que cada capítulo comience en hoja aparte y que cada uno de ellos incluya un párrafo introductorio que presente su organización e indique al lector cuál es el objetivo específico del mismo.
   // Igualmente, al terminar cada capítulo es aconsejable redactar un párrafo que contenga un pequeño resumen de lo tratado e indique además la relación del capítulo que termina con el que empieza a continuación.
   pagebreak(weak: true)
   set par(justify: false, leading: 1.25em - 0.75em)
-  set align(right)
-  set block(sticky: false)
-  set text(tracking: 0.05em)
+  set align(alignment)
+  // Keep the complete heading together and attached to the following content.
+  block(width: 100%, breakable: false, sticky: true, {
+    set text(tracking: 0.05em, number-type: "lining", number-width: "tabular")
 
-  if it.numbering != none and it.outlined == true [
-    #set text(
-      size: 2.5em,
-      fill: gray.darken(40%),
-    )
-    #it.supplement
-    #text(
-      size: 1.25em,
-      counter(heading).display(it.numbering),
-    )
-  ]
+    if it.numbering != none and it.outlined == true [
+      #set text(
+        size: 2.5em,
+        fill: gray.darken(40%),
+      )
+      #it.supplement
+      #text(
+        size: 1.25em,
+        counter(heading).display(it.numbering),
+      )
+    ]
 
-  block(
-    width: 100%,
-    stroke: (y: 1pt),
-    inset: 1.5em,
-    spacing: 2em,
-    text(
-      size: 2em,
-      it.body,
-    ),
-  )
+    block(
+      width: 100%,
+      stroke: (y: 1pt),
+      inset: (y: 1.5em, x: 0.5em),
+      spacing: 2em,
+      text(
+        size: 2em,
+        it.body,
+      ),
+    )
+  })
 }
 
 #let part-page(it) = context {
-  import "lib/info.typ"
+  import "info.typ"
   pagebreak(weak: true)
   set par(justify: false)
   set page(numbering: none, header: none)
@@ -89,16 +84,14 @@
   import "info.typ"
 
   let typeface = info.font.get()
-  let font-family = info.font-family.get()
   let multi-part = info.multi-part.get()
   let chapter-level = if multi-part { 2 } else { 1 }
   let section-level = chapter-level + 1
-  let paragraph-level = section-level + 3
 
   set page(
     numbering: "1",
     header: context hydra(
-      2,
+      chapter-level,
       display: (
         _,
         it,
@@ -188,7 +181,8 @@
         #if (type(it.attribution) == label) {
           cite(it.attribution)
         } else if (type(it.attribution) == str or type(it.attribution) == content) {
-          it.attribution
+          linebreak()
+          text(style: "normal", it.attribution)
         }
       ]
     }
@@ -197,88 +191,42 @@
   // Art. 144: Encabezamientos
   // Todo escrito deberá incluir encabezados para destacar los subtemas de la investigación. Para ello se deberá considerar un espacio adicional antes y después de cada encabezado. Se podrá remarcar los encabezados con negrillas, en cuyo caso solo se necesita un espacio antes del encabezado.
   // Existen encabezados principales y secundarios, los cuales deberán estar escritos y ubicados apropiadamente, según una escala jerárquica sistemática durante todo el desarrollo del texto. Para señalar los encabezados podrá utilizarse el sistema decimal o alfanumérico.
-  set heading(
-    numbering: (..args) => {
-      set text(
-        stylistic-set: if font-family == "Alegreya" or font-family == "Piazzolla" { 1 } else { () },
-        number-type: "lining",
-        number-width: "tabular",
-      )
+  // Markup depth stays independent of the optional part level.
+  set heading(offset: chapter-level - 1, numbering: (..args) => {
+    let pos = args.pos().slice(chapter-level - 1)
+    if pos.len() == 1 {
+      numbering("1", ..pos)
+    } else if pos.len() <= 4 {
+      numbering("1.1.", ..pos)
+    }
+  })
 
-      if multi-part {
-        if args.pos().len() == 1 {
-          // Level 1: Roman numerals for Parts.
-          numbering("I", ..args)
-        } else if args.pos().len() == 2 {
-          // Level 2: Use the chapter state counter and increment it.
-          // chapter-counter.display("I")
-          numbering("I", chapter-counter.get().first())
-        } else if args.pos().len() == 3 or args.pos().len() == 4 or args.pos().len() == 5 {
-          // Level 3+: Use the chapter number followed by the position within that chapter.
-          numbering(
-            "1.1.",
-            // ..chapter-counter.get(),
-            ..args.pos().slice(2),
-          )
-        } else {
-          // For the rest of headings, no
-          none
-        }
-      } else {
-        if args.pos().len() == 1 {
-          // Level 1: Use the chapter state counter and increment it.
-          numbering("I", chapter-counter.get().first())
-        } else if args.pos().len() == 2 or args.pos().len() == 3 or args.pos().len() == 4 {
-          // Level 2+: Use the chapter number followed by the position within that chapter.
-          numbering(
-            "1.1.",
-            // ..chapter-counter.get(),
-            ..args.pos().slice(1),
-          )
-        } else {
-          // For the rest of headings, no
-          none
-        }
-      }
-    },
+  show heading: set text(
+    size: typeface.text.size,
+    number-type: "lining",
+    number-width: "tabular",
   )
-
-  show heading: set text(size: typeface.text.size)
   show heading: set block(spacing: 1.5em)
 
-  show heading.where(level: chapter-level): set text(
-    font: typeface.chapter.font,
-  )
+  show heading.where(level: chapter-level): set heading(supplement: [Capítulo])
+  show heading.where(level: section-level): set heading(supplement: [Sección])
 
-  show heading.where(level: chapter-level): set heading(
-    supplement: [Capítulo],
-  )
-  show heading.where(level: 1): set heading(
-    supplement: if multi-part [Parte] else [Capítulo],
-  )
-
-  show heading.where(level: 2): set heading(
-    supplement: if multi-part [Capítulo] else [Sección],
-  )
-
-  show heading.where(level: 1): it => if multi-part {
-    part-page(it)
-  } else {
-    chapter-page(it)
+  // Style by markup depth so back-matter's offset cannot inherit the wrong
+  // chapter/section/paragraph treatment from multipart main matter.
+  show heading: it => {
+    let depth = it.level - it.offset
+    if it.supplement == [Parte] {
+      part-page(it)
+    } else if depth == 1 {
+      set text(font: typeface.chapter.font)
+      smallcaps(chapter-page(it))
+    } else {
+      set align(center) if depth == 2
+      set text(weight: "bold") if depth == 4
+      set text(style: "italic") if depth == 5
+      if depth == 5 { box[#it.body.] } else if depth == 6 { box(emph[#it.body.]) } else { it }
+    }
   }
-
-  show heading.where(level: 2): it => if multi-part {
-    chapter-page(it)
-  } else {
-    it
-  }
-
-  show heading.where(level: chapter-level): smallcaps
-  show heading.where(level: section-level): set align(center)
-  show heading.where(level: section-level + 2): set text(weight: "bold")
-  show heading.where(level: section-level + 3): set text(style: "italic")
-  show heading.where(level: paragraph-level): it => box[#it.body.]
-  show heading.where(level: paragraph-level + 1): it => box(emph[#it.body.])
 
   show figure.where(kind: raw): set figure(placement: none)
   show figure.where(kind: raw): set block(breakable: true, sticky: false)
@@ -286,7 +234,21 @@
   show figure.where(kind: raw): set align(left)
 
   // La numeración de páginas no es correlativa entre romana y arábiga, por lo que se reinicia el contador de páginas al cambiar a la numeración arábiga.
+  counter(heading).update(0)
   counter(page).update(1)
 
   body
+}
+
+#let part(body) = context {
+  import "info.typ"
+
+  assert(info.multi-part.get(), message: "El documento no está configurado para múltiples partes.")
+
+  // A part advances the outer counter, but preserves the continuous chapter
+  // number. The native heading counter remains the sole numbering source.
+  let previous = counter(heading).get()
+  heading(level: 1, offset: 0, numbering: "I", body, supplement: [Parte])
+  counter(heading).update((previous.first() + 1, previous.at(1, default: 0)))
+  pagebreak(weak: true)
 }

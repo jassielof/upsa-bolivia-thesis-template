@@ -41,6 +41,7 @@
   import "abstract.typ"
   import "title.typ": title-page
 
+  set heading(offset: 0)
   title-page()
 
   let typeface = info.font.get()
@@ -54,6 +55,7 @@
 
   show heading: set text(size: typeface.text.size)
   show heading: set block(spacing: 1.5em)
+  show outline.entry: set text(number-type: "lining", number-width: "tabular")
 
   set par(
     leading: 1.25em,

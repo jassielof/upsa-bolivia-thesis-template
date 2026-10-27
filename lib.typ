@@ -4,7 +4,7 @@
 #import "lib/abstract.typ": bime as bime-abstract
 #import "lib/csl-styles.typ"
 #import "lib/setting.typ": settings
-#import "lib/main-matter.typ": main-matter
+#import "lib/main-matter.typ": main-matter, part
 #import "lib/front-matter.typ": front-matter
 #import "lib/back-matter.typ": back-matter
 
