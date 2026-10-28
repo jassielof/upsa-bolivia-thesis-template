@@ -210,6 +210,10 @@
 
   show heading.where(level: chapter-level): set heading(supplement: [Capítulo])
   show heading.where(level: section-level): set heading(supplement: [Sección])
+  show heading.where(level: section-level + 1): set heading(supplement: [Subsección])
+  show heading.where(level: section-level + 2): set heading(supplement: [Subsubsección])
+  show heading.where(level: section-level + 3): set heading(supplement: [Párrafo])
+  show heading.where(level: section-level + 4): set heading(supplement: [Subpárrafo])
 
   // Style by markup depth so back-matter's offset cannot inherit the wrong
   // chapter/section/paragraph treatment from multipart main matter.
