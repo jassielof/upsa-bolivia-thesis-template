@@ -13,6 +13,7 @@
   let typeface = info.font.get()
   let author = info.author-name.get()
   let faculty = info.faculty.get()
+  let faculty-short = info.faculty-short.get()
   let major = info.degree-program.get()
   let is-proposal = info.proposal.get()
   let degree-level = info.degree-level.get()
@@ -62,9 +63,9 @@
   v(3.5em)
 
   block(spacing: 0pt, {
-    text(faculty, weight: "bold", size: info-size * 1.15, tracking: 0.04em)
-    v(0.45em)
-    text(major, size: info-size * 1.05)
+    text(weight: "bold", size: info-size * 1.15, tracking: 0.04em)[#upper(faculty-short) --- #faculty]
+    // v(0.45em)
+    // text(major, size: info-size * 1.1, weight: "medium")
   })
 
   v(1.2fr)
@@ -99,20 +100,20 @@
 
   if author-id != none and not is-front-cover [
     #v(1em)
-    #text(size: info-size * 0.95, number-type: "lining", number-width: "tabular")[Reg.: #author-id]
+    #text(size: info-size * 0.95, number-type: "lining", number-width: "tabular")[#sym.numero Reg.: #author-id]
   ]
 
   if supervisor != none {
-    v(1.8em)
-    text(size: info-size * 0.85, tracking: 0.05em)[Director de tesis]
-    v(0.3em)
+    v(1.5em)
+    text(size: info-size * 0.85, tracking: 0.05em)[Director de Tesis]
+    v(0.5em)
     text(supervisor, size: info-size * 1.05, weight: "medium")
   }
 
   v(1fr)
 
   block(spacing: 0pt, {
-    text(city, size: info-size)
+    text(city, size: info-size * 1.1, tracking: 0.04em)
     v(0.3em)
     text(size: info-size, weight: "bold", number-type: "lining")[#year]
   })
