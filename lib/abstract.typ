@@ -67,7 +67,7 @@
       ([Palabras clave], keywords.join(", "))
     },
     ..if email != none {
-      ([Correo electrónico], text(email, number-type: "lining", number-width: "tabular"))
+      ([Correo electrónico], text(email, number-type: "lining", number-width: "tabular", features: (case: 1)))
     },
     ..if year != none {
       ([Año], text(repr(year), number-type: "lining", number-width: "tabular"))
