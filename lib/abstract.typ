@@ -14,17 +14,25 @@
   let work-title = info.work-title.get()
   let year = info.work-date.get()
 
-  set heading(numbering: none, outlined: false)
+  set heading(numbering: none, outlined: true, bookmarked: true)
   show outline: set heading(numbering: none, outlined: false, level: 2)
 
   heading(level: 1)[Abstracto]
+
+  show table.cell: c => {
+    if c.x == 0 {
+      strong(c)
+    } else {
+      c
+    }
+  }
 
   table(
     align: (left + horizon, left),
     columns: 2,
     stroke: 1pt,
-    [*Título*], work-title,
-    [*Autor*], author,
+    [Título], work-title,
+    [Autor], author,
   )
 
   set heading(level: 2)
@@ -40,7 +48,10 @@
   }
 
   show outline.entry: set block(spacing: 0.75em)
+  show outline.entry: set text(weight: "medium")
   content-index
+
+  v(1em)
 
   table(
     columns: (auto, 1fr),
@@ -56,16 +67,13 @@
       ([Palabras clave], keywords.join(", "))
     },
     ..if email != none {
-      ([Correo electrónico], email)
+      ([Correo electrónico], text(email, number-type: "lining", number-width: "tabular"))
     },
     ..if year != none {
-      ([Año], repr(year))
+      ([Año], text(repr(year), number-type: "lining", number-width: "tabular"))
     },
   )
 }
-
-// Abstracto o resumen informativo requerido en la tesis.
-#let chapter() = {}
 
 /// Resumen del trabajo requerido para la entrega de trabajos de grado de Universidades Privadas, a pedido de la Biblioteca del Ministerio de Educación. Tiene que ser impreso.
 ///
@@ -106,7 +114,7 @@
     / #upper[Nombres y apellidos del autor]: #author
     / #upper[Nombres y apellidos del tutor o prof. guía]: #supervisor
     / #upper[Ciudad]: #city
-    / #upper[Año del trabajo]: #year
+    / #upper[Año del trabajo]: #text(year, number-type: "lining", number-width: "tabular")
   ]
 
   line(length: 100%)
