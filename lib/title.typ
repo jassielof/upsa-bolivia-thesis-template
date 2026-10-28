@@ -35,13 +35,13 @@
 
   let meta-scale = if is-front-cover { 1.12 } else { 1.0 }
   let title-scale = if is-front-cover { 1.14 } else { 1.0 }
-  let info-size = typeface.title-info.size * meta-scale
+  let info-size = typeface.text.size * meta-scale
 
-  set text(..typeface.title-info)
+  set text(font: typeface.display)
 
   show title: set text(
-    ..typeface.title,
-    size: typeface.title.size * title-scale,
+    font: typeface.text.font,
+    size: typeface.text.size * 1.6 * title-scale,
     hyphenate: false,
     number-type: "lining",
   )

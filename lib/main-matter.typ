@@ -18,14 +18,16 @@
   import "info.typ"
   let typeface = info.font.get()
   show heading: set text(weight: "bold", style: "normal")
-  show heading.where(level: offset + 1): set text(font: typeface.chapter.font)
+  show heading.where(level: offset + 1): set text(font: typeface.display)
   show heading.where(level: offset + 2): set align(center)
   show heading.where(level: offset + 4): set text(weight: "bold", style: "italic")
   show heading.where(level: offset + 6): set text(weight: "bold", style: "italic")
   // Match the matter's resolved levels before supplements are assigned.
-  show heading.where(level: offset + 5).or(
-    heading.where(level: offset + 6),
-  ): it => box[#it.body.]
+  show heading
+    .where(level: offset + 5)
+    .or(
+      heading.where(level: offset + 6),
+    ): it => box[#it.body.]
   body
 }
 
@@ -87,7 +89,7 @@
 
   if it.numbering != none and it.outlined == true {
     text(
-      ..typeface.part,
+      font: typeface.text.font,
       size: 3.5em,
       weight: "black",
     )[#counter(heading).display(it.numbering)]
@@ -124,7 +126,7 @@
         _,
         it,
       ) => text(
-        font: typeface.chapter.font,
+        font: typeface.display,
         tracking: 0.2em,
         fill: gray.darken(40%),
         weight: "bold",
@@ -177,7 +179,7 @@
   )
 
   show figure.caption: set align(left)
-  show figure.caption: set text(font: typeface.caption.font)
+  show figure.caption: set text(font: typeface.text.font)
   show figure.caption: set par(first-line-indent: 0em)
   show figure.caption: it => {
     strong[#it.supplement #context it.counter.display(it.numbering)]
@@ -240,10 +242,15 @@
 
   show: heading-styles.with(offset: chapter-level - 1)
 
-  show heading.where(supplement: [Capítulo]).or(
-    heading.where(supplement: [Anexo]),
-  ): it => smallcaps(chapter-page(it))
-  show heading.where(supplement: [Parte]): part-page
+  // Match markup depth directly: supplements are assigned by show-set rules
+  // and are not available yet when a show-rule selector is matched.
+  show heading.where(depth: 1): it => {
+    if it.supplement == [Parte] {
+      part-page(it)
+    } else {
+      smallcaps(chapter-page(it))
+    }
+  }
 
   show figure.where(kind: raw): set figure(placement: none)
   show figure.where(kind: raw): set block(breakable: true, sticky: false)

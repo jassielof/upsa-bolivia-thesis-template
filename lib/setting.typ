@@ -102,8 +102,14 @@
     "Andada",
     "Piazzolla",
   )
+
+  let typeface-options-inter = (
+    ..typeface-options,
+    "Inter",
+  )
+
   assert(
-    typeface in typeface-options,
+    typeface in typeface-options-inter,
     message: "El tipo de letra (typeface) debe ser uno de los siguientes: "
       + typeface-options.join(", ", last: " o ")
       + ".",

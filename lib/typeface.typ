@@ -138,12 +138,19 @@
 #let inter = (
   text: (
     font: "Inter",
+    stylistic-set: (3, 2),
+    size: 10pt,
+    discretionary-ligatures: true,
   ),
-  title: (),
-  title-info: (),
-  part: (),
-  chapter: (),
-  section: (),
+  display: "Inter",
+  math: (
+    font: "Fira Math",
+    size: 10pt,
+  ),
+  mono: (
+    font: ("Consolas", "Inconsolata", "Inconsolata EX", "Inconsolata LGC"),
+    size: 10pt,
+  ),
 )
 
 #let alegreya = (
@@ -151,46 +158,7 @@
     font: "Alegreya",
     size: 11pt,
   ),
-  title: (
-    font: "Alegreya",
-    weight: "bold",
-    size: 20pt,
-  ),
-  title-info: (
-    font: "Alegreya Sans",
-    weight: "regular",
-    size: 10pt,
-  ),
-  part: (
-    font: "Alegreya",
-    weight: "bold",
-    size: 24pt,
-    stylistic-set: 1,
-  ),
-  chapter: (
-    font: "Alegreya Sans",
-    size: 18pt,
-  ),
-  section: (
-    font: "Alegreya Sans",
-    weight: "bold",
-    size: 14pt,
-  ),
-  subsection: (
-    font: "Alegreya Sans",
-    weight: "medium",
-    size: 12pt,
-  ),
-  caption: (
-    font: "Alegreya",
-    weight: "regular",
-    size: 9.5pt,
-  ),
-  footnote: (
-    font: "Alegreya",
-    weight: "regular",
-    size: 9pt,
-  ),
+  display: "Alegreya Sans",
   math: (
     font: "TeX Gyre Pagella Math",
     size: 11pt,
@@ -336,6 +304,8 @@
   new-computer-modern
 } else if name == "TeX Gyre" {
   tex-gyre
+} else if name == "Inter" {
+  inter
 } else {
   reforma
 }

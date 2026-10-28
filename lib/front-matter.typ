@@ -58,7 +58,7 @@
   )
 
   show heading: set text(size: typeface.text.size)
-  show heading.where(level: 2): set text(..typeface.section)
+  show heading.where(level: 2): set text(font: typeface.text.font)
   show heading: set block(spacing: 1.5em)
   show outline.entry: set text(number-type: "lining", number-width: "tabular")
 

@@ -15,7 +15,7 @@
     set block(spacing: if is-part { 1.5em } else { 1.3em })
 
     set text(
-      font: if is-part { typeface.part.font } else { typeface.chapter.font },
+      font: if is-part { typeface.text.font } else { typeface.display },
       size: if is-part { 1.5em } else { 1.25em },
       weight: if is-part { 700 } else { 600 },
       tracking: 0.025em,
@@ -70,7 +70,7 @@
         "regular"
       },
       font: if el.supplement == [Sección] {
-        typeface.section.font
+        typeface.display
       } else {
         typeface.text.font
       },
