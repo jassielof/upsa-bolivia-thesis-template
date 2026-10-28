@@ -1,5 +1,5 @@
 #import "toc.typ": all-outlines
-#import "main-matter.typ": chapter-page
+#import "main-matter.typ": chapter-page, heading-supplements
 
 /// Genera la página de agradecimientos del documento, si aplica.
 #let acknowledgements-page(body) = {
@@ -27,14 +27,17 @@
   objective: none,
   executive-summary: none,
   dedication: none,
-  abstract-content: outline(
-    target: heading.where(
-      outlined: true,
-      supplement: [Capítulo],
-    ),
-    indent: 0em,
-    title: [Contenido],
-  ),
+  abstract-content: context {
+    let chapters = query(heading.where(outlined: true, supplement: [Capítulo]))
+      .filter(it => it.numbering != none)
+    outline(
+      target: selector.or(..chapters.map(it => heading.where(
+        outlined: true, supplement: [Capítulo], numbering: it.numbering,
+      ))),
+      indent: 0em,
+      title: [Contenido],
+    )
+  },
   acknowledgements: none,
 ) = context {
   import "info.typ"
@@ -42,6 +45,7 @@
   import "title.typ": title-page
 
   set heading(offset: 0)
+  show: heading-supplements
   title-page()
 
   let typeface = info.font.get()

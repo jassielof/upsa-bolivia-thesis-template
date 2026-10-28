@@ -79,15 +79,12 @@
 
     if modality != none {
       v(1.5em)
-      set text(
-        ..typeface.text,
-        size: typeface.text.size,
-      )
+      set text(..typeface.text)
 
-      set par(leading: 0.9em)
+      set par(leading: 1em)
 
       block(width: 80%, {
-        [_#(modality)_ para optar por el grado de]
+        [#text(modality, weight: "medium") para optar por el grado de]
         linebreak()
         text(weight: "medium", style: "normal")[«#degree-level en #major»]
       })

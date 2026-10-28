@@ -1,3 +1,5 @@
+#import "main-matter.typ": heading-supplements, heading-styles
+
 /// Prepara el documento para las páginas finales, incluyendo anexos, glosario, etc.
 #let back-matter(body) = context {
   import "info.typ"
@@ -5,6 +7,12 @@
   // Art 147: Citas y notas
   // Las citas y notas bibliográficas deberán ceñirse al estilo de referenciación bibliográfica establecido por la Facultad.
   show bibliography: bib-it => {
+    // Bibliography is an unnumbered chapter, outside the appendix hierarchy.
+    show heading.where(level: 1): set heading(supplement: [Capítulo])
+    set heading(
+      level: 1, offset: 0, numbering: none,
+      outlined: true, bookmarked: true, supplement: [Capítulo],
+    )
     show block: block-it => context {
       // if it body is auto or styled()
       if block-it.body == auto or block-it.body.func() == text(fill: red)[].func() {
@@ -28,6 +36,9 @@
     hanging-indent: 0.5in,
   )
 
+  show: heading-supplements.with(appendix: true)
+  show: heading-styles
+
   // Back matter is outside the part hierarchy. Appendices restart at A.
   set heading(
     offset: 0,
@@ -37,17 +48,6 @@
     },
   )
 
-  // TODO: Only the chapter-level heading supplement should change to "Anexo", the rest should remain as inherited from the main matter.
-  show heading.where(level: 1): set heading(supplement: [Anexo])
-
-  // TODO: The bibliography should have a chapter style adn remain bookmarked as well as outlined but remain unnumbered.
-  show bibliography: set heading(
-    level: 1,
-    offset: 0,
-    numbering: none,
-    outlined: true,
-    bookmarked: true,
-  )
   counter(heading).update(0)
 
   body

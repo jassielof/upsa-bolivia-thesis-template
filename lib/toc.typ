@@ -11,15 +11,7 @@
   let is-part = el.supplement == [Parte]
   let is-chapter = el.supplement in ([Capítulo], [Anexo])
 
-  if (
-    is-part
-      or is-chapter
-      // TODO: there must be a better way to filter front and back matter unnumbered chapters without depending on its body.
-      or el.body == [Resumen]
-      or el.body == [Abstracto]
-      or el.body == [Resumen ejecutivo]
-      or el.body == [Referencias]
-  ) {
+  if is-part or is-chapter {
     set block(spacing: if is-part { 1.5em } else { 1.3em })
 
     set text(
@@ -126,12 +118,16 @@
 
   show outline.entry: chapter-outline-entry
 
+  let target = heading.where(outlined: true)
+  let appendices = query(heading.where(level: 1, supplement: [Anexo]))
+  if appendices.len() > 0 {
+    target = target.before(appendices.first().location(), inclusive: false)
+  }
+
   outline(
     title: [Índice general],
     depth: if multi-part { 5 } else { 4 },
-    target: selector.or(
-      ..query(heading).filter(it => it.supplement != [Anexo]).map(it => it.func().where(supplement: it.supplement)),
-    ),
+    target: target,
     indent: n => if multi-part {
       if n == 0 or n == 1 or n == 2 { 0em } else if n == 3 { 0.5em } else { n * 0.25em }
     } else {
@@ -171,14 +167,15 @@
 // Genera el índice de anexos si existen.
 #let appendix-outline = context {
   show outline.entry: chapter-outline-entry
-  if (query(heading.where(supplement: [Anexo])).len() != 0) {
+  let appendices = query(heading.where(level: 1, supplement: [Anexo]))
+  if appendices.len() > 0 {
     outline(
       title: [Índice de anexos],
-      target: heading.where(
-        supplement: [Anexo],
-        level: 1,
-        outlined: true,
+      depth: 4,
+      target: heading.where(outlined: true).after(
+        appendices.first().location(), inclusive: true,
       ),
+      indent: n => if n <= 1 { 0em } else if n == 2 { 0.5em } else { n * 0.25em },
     )
   }
 }

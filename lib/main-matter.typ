@@ -1,5 +1,34 @@
 #import "cite.typ": to-string
 
+// Apply the same logical hierarchy at each matter's heading offset.
+#let heading-supplements(body, offset: 0, appendix: false) = {
+  show heading.where(level: offset + 1): set heading(
+    supplement: if appendix { [Anexo] } else { [Capítulo] },
+  )
+  show heading.where(level: offset + 2): set heading(supplement: [Sección])
+  show heading.where(level: offset + 3): set heading(supplement: [Subsección])
+  show heading.where(level: offset + 4): set heading(supplement: [Subsubsección])
+  show heading.where(level: offset + 5): set heading(supplement: [Párrafo])
+  show heading.where(level: offset + 6): set heading(supplement: [Subpárrafo])
+  body
+}
+
+// Show-set styling follows each matter's offset without replacing headings.
+#let heading-styles(body, offset: 0) = context {
+  import "info.typ"
+  let typeface = info.font.get()
+  show heading: set text(weight: "bold", style: "normal")
+  show heading.where(level: offset + 1): set text(font: typeface.chapter.font)
+  show heading.where(level: offset + 2): set align(center)
+  show heading.where(level: offset + 4): set text(weight: "bold", style: "italic")
+  show heading.where(level: offset + 6): set text(weight: "bold", style: "italic")
+  // Match the matter's resolved levels before supplements are assigned.
+  show heading.where(level: offset + 5).or(
+    heading.where(level: offset + 6),
+  ): it => box[#it.body.]
+  body
+}
+
 #let chapter-page(it, alignment: left) = context {
   // Art. 143: Inicio y conclusión del capítulo
   // Se recomienda que cada capítulo comience en hoja aparte y que cada uno de ellos incluya un párrafo introductorio que presente su organización e indique al lector cuál es el objetivo específico del mismo.
@@ -86,7 +115,6 @@
   let typeface = info.font.get()
   let multi-part = info.multi-part.get()
   let chapter-level = if multi-part { 2 } else { 1 }
-  let section-level = chapter-level + 1
 
   set page(
     numbering: "1",
@@ -208,29 +236,14 @@
   )
   show heading: set block(spacing: 1.5em)
 
-  show heading.where(level: chapter-level): set heading(supplement: [Capítulo])
-  show heading.where(level: section-level): set heading(supplement: [Sección])
-  show heading.where(level: section-level + 1): set heading(supplement: [Subsección])
-  show heading.where(level: section-level + 2): set heading(supplement: [Subsubsección])
-  show heading.where(level: section-level + 3): set heading(supplement: [Párrafo])
-  show heading.where(level: section-level + 4): set heading(supplement: [Subpárrafo])
+  show: heading-supplements.with(offset: chapter-level - 1)
 
-  // Style by markup depth so back-matter's offset cannot inherit the wrong
-  // chapter/section/paragraph treatment from multipart main matter.
-  show heading: it => {
-    let depth = it.level - it.offset
-    if it.supplement == [Parte] {
-      part-page(it)
-    } else if depth == 1 {
-      set text(font: typeface.chapter.font)
-      smallcaps(chapter-page(it))
-    } else {
-      set align(center) if depth == 2
-      set text(weight: "bold") if depth == 4
-      set text(style: "italic") if depth == 5
-      if depth == 5 { box[#it.body.] } else if depth == 6 { box(emph[#it.body.]) } else { it }
-    }
-  }
+  show: heading-styles.with(offset: chapter-level - 1)
+
+  show heading.where(supplement: [Capítulo]).or(
+    heading.where(supplement: [Anexo]),
+  ): it => smallcaps(chapter-page(it))
+  show heading.where(supplement: [Parte]): part-page
 
   show figure.where(kind: raw): set figure(placement: none)
   show figure.where(kind: raw): set block(breakable: true, sticky: false)
