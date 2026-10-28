@@ -249,10 +249,6 @@
   author: none,
   citation-key: none,
   call-number: none,
-  archive: none,
-  archive-location: none,
-  publisher-short: "UPSA",
-  edition: none,
   supervisor-role: "director",
 ) = context {
   let final-author = if author != none {
@@ -279,26 +275,10 @@
   }
 
   let university = optional-string(info.university.get())
+  let university-short = optional-string(info.university-short.get())
   let city = optional-string(info.city.get())
   let supervisor = optional-string(info.supervisor.get())
   let abstract = optional-string(info.work-abstract.get())
-
-  // Publisher's name, including its short form.
-  let publisher-name = (
-    value: university,
-  )
-
-  insert-optional(
-    publisher-name,
-    "short",
-    optional-string(publisher-short),
-  )
-
-  let publisher = (
-    name: publisher-name,
-  )
-
-  insert-optional(publisher, "location", city)
 
   // Hayagriva thesis metadata.
   let data = (
@@ -307,53 +287,34 @@
     author: final-author,
     date: int(year),
     language: "es-BO",
+    abstract: abstract,
     genre: thesis-type,
     organization: university,
-    publisher: publisher,
+    publisher: (
+      name: (
+        value: university,
+        short: university-short,
+      ),
+      location: city,
+    ),
+    archive: "Biblioteca de la " + university,
+    archive-location: city,
+    edition: 1,
   )
-
-  insert-optional(data, "abstract", abstract)
 
   let pages = info.work-pages.final()
   if pages != none {
     data.insert("page-total", pages)
   }
 
-  // Library and archival information.
-  insert-optional(
-    data,
-    "call-number",
-    optional-string(call-number),
-  )
-
-  insert-optional(
-    data,
-    "archive",
-    optional-string(archive),
-  )
-
-  insert-optional(
-    data,
-    "archive-location",
-    optional-string(archive-location),
-  )
-
-  // Optional edition.
-  if edition != none {
-    data.insert("edition", edition)
+  if call-number != none {
+    data.insert("call-number", call-number)
   }
 
-  // Academic supervisor (approximated as an affiliated role).
   if supervisor != none and supervisor-role != none {
-    data.insert("affiliated", (
-      (
-        role: supervisor-role,
-        names: supervisor,
-      ),
-    ))
+    data.insert("note", "Supervisada por: " + supervisor)
   }
 
-  // The citation key must be dynamically inserted.
   let entries = (:)
   entries.insert(final-key, data)
 
