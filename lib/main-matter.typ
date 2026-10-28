@@ -171,7 +171,7 @@
     spacing: 1.5em - 0.5em,
     leading: 1.25em - 0.25em,
   )
-  show raw: set text(font: typeface.mono.font, size: typeface.text.size - (1 / 12 * 1em))
+  show raw: set text(font: typeface.mono.font, size: typeface.mono.size)
   show figure.where(kind: math.equation): set figure(supplement: [Fórmula])
   set figure(
     gap: 1.25em,

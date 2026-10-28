@@ -92,31 +92,15 @@
   )
   info.paper-size.update(paper-size)
 
-  let typeface-options = (
-    "New Computer Modern",
-    "IBM Plex",
-    "Reforma",
-    "Alegreya",
-    "Adobe Source",
-    "TeX Gyre",
-    "Andada",
-    "Piazzolla",
-  )
-
-  let typeface-options-inter = (
-    ..typeface-options,
-    "Inter",
-  )
-
+  import "typeface.typ": extra as typeface-options-inter, get as get-typeface, typefaces as typeface-options
   assert(
-    typeface in typeface-options-inter,
+    typeface in typeface-options-inter.keys(),
     message: "El tipo de letra (typeface) debe ser uno de los siguientes: "
-      + typeface-options.join(", ", last: " o ")
+      + typeface-options.keys().join(", ", last: " o ")
       + ".",
   )
 
-  import "typeface.typ": get as get-font
-  info.font.update(get-font(typeface))
+  info.font.update(get-typeface(typeface))
   info.font-family.update(typeface)
 
   let print-layout-options = ("screen", "duplex", "simplex")
