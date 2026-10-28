@@ -135,6 +135,17 @@
   ),
 )
 
+#let inter = (
+  text: (
+    font: "Inter",
+  ),
+  title: (),
+  title-info: (),
+  part: (),
+  chapter: (),
+  section: (),
+)
+
 #let alegreya = (
   text: (
     font: "Alegreya",
