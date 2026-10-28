@@ -87,26 +87,9 @@
         number-type: "lining",
         it.prefix(),
       ),
-      box(
-        inset: 0pt,
-        outset: 0pt,
-        grid(
-          columns: (1fr, auto),
-          column-gutter: 0.25em,
-          align: (left, right + bottom),
-          {
-            it.body()
-            sym.space
-            box(width: 1fr, repeat(gap: 0.1em, justify: true)[.])
-          },
-          text(
-            it.page(),
-            number-width: "tabular",
-            number-type: "lining",
-            stylistic-set: if font-family == "Alegreya" or font-family == "Piazzolla" { 1 } else { () },
-          ),
-        ),
-      ),
+      // Native inline layout keeps the prefix and first body line on the
+      // same baseline, independently of the font's metrics.
+      it.inner(),
     ))
   }
 }
