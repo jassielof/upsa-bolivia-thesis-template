@@ -2,7 +2,6 @@
 #let back-matter(body) = context {
   import "info.typ"
 
-
   // Art 147: Citas y notas
   // Las citas y notas bibliográficas deberán ceñirse al estilo de referenciación bibliográfica establecido por la Facultad.
   show bibliography: bib-it => {
@@ -21,7 +20,8 @@
     bib-it
   }
 
-  set bibliography(style: "apa", full: false, title: [Referencias])
+  import "csl-styles.typ": apa
+  set bibliography(style: apa, full: false, title: [Referencias])
 
   show bibliography: set par(
     first-line-indent: 0in,
@@ -29,16 +29,24 @@
   )
 
   // Back matter is outside the part hierarchy. Appendices restart at A.
-  set heading(offset: 0, supplement: auto, numbering: (..args) => {
-    let pos = args.pos()
-    if pos.len() == 1 { numbering("A", ..pos) }
-    else if pos.len() <= 4 { numbering("A.a.1.", ..pos) }
-  })
+  set heading(
+    offset: 0,
+    numbering: (..args) => {
+      let pos = args.pos()
+      if pos.len() == 1 { numbering("A", ..pos) } else if pos.len() <= 4 { numbering("A.a.1.", ..pos) }
+    },
+  )
+
+  // TODO: Only the chapter-level heading supplement should change to "Anexo", the rest should remain as inherited from the main matter.
   show heading.where(level: 1): set heading(supplement: [Anexo])
-  show heading.where(level: 2): set heading(supplement: [Sección])
+
+  // TODO: The bibliography should have a chapter style adn remain bookmarked as well as outlined but remain unnumbered.
   show bibliography: set heading(
-    level: 1, offset: 0, numbering: none,
-    outlined: false, bookmarked: true, supplement: [Capítulo],
+    level: 1,
+    offset: 0,
+    numbering: none,
+    outlined: true,
+    bookmarked: true,
   )
   counter(heading).update(0)
 
