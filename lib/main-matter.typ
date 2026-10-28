@@ -1,4 +1,4 @@
-#import "biblatex.typ": to-string
+#import "cite.typ": to-string
 
 #let chapter-page(it, alignment: left) = context {
   // Art. 143: Inicio y conclusión del capítulo

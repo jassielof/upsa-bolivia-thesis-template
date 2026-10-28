@@ -218,3 +218,146 @@
 
   return asset("thesis.bib", bytes(biblatex))
 }
+
+
+#let optional-string(value) = {
+  if value == none {
+    return none
+  }
+
+  let result = str(to-string(value)).trim()
+  if result == "" { none } else { result }
+}
+
+#let insert-optional(dict, key, value) = {
+  if value != none {
+    dict.insert(key, value)
+  }
+}
+
+/// Genera la entrada Hayagriva de la tesis en formato `.yml`.
+///
+/// - author: Autor en formato "Apellidos, Nombres".
+/// - citation-key: Clave personalizada de citación.
+/// - call-number: Signatura topográfica de la biblioteca.
+/// - archive: Biblioteca que conserva la tesis.
+/// - archive-location: Localización de la biblioteca.
+/// - publisher-short: Abreviatura de la institución editora.
+/// - edition: Edición de la obra, si corresponde.
+/// - supervisor-role: Rol Hayagriva del supervisor.
+#let generate-hayagriva(
+  author: none,
+  citation-key: none,
+  call-number: none,
+  archive: none,
+  archive-location: none,
+  publisher-short: "UPSA",
+  edition: none,
+  supervisor-role: "director",
+) = context {
+  let final-author = if author != none {
+    optional-string(author)
+  } else {
+    normalize-author(info.author-name.get())
+  }
+
+  let work-title = optional-string(info.work-title.get())
+  let thesis-type = optional-string(info.thesis-modality.get())
+
+  let raw-date = info.work-date.get()
+  let year = if type(raw-date) == datetime {
+    str(raw-date.year())
+  } else {
+    let m = str(raw-date).match(regex("\b(19|20)\d{2}\b"))
+    if m != none { m.text } else { str(raw-date) }
+  }
+
+  let final-key = if citation-key != none {
+    to-ascii(citation-key)
+  } else {
+    build-bibkey(final-author, year, work-title)
+  }
+
+  let university = optional-string(info.university.get())
+  let city = optional-string(info.city.get())
+  let supervisor = optional-string(info.supervisor.get())
+  let abstract = optional-string(info.work-abstract.get())
+
+  // Publisher's name, including its short form.
+  let publisher-name = (
+    value: university,
+  )
+
+  insert-optional(
+    publisher-name,
+    "short",
+    optional-string(publisher-short),
+  )
+
+  let publisher = (
+    name: publisher-name,
+  )
+
+  insert-optional(publisher, "location", city)
+
+  // Hayagriva thesis metadata.
+  let data = (
+    type: "thesis",
+    title: work-title,
+    author: final-author,
+    date: int(year),
+    language: "es-BO",
+    genre: thesis-type,
+    organization: university,
+    publisher: publisher,
+  )
+
+  insert-optional(data, "abstract", abstract)
+
+  let pages = info.work-pages.final()
+  if pages != none {
+    data.insert("page-total", pages)
+  }
+
+  // Library and archival information.
+  insert-optional(
+    data,
+    "call-number",
+    optional-string(call-number),
+  )
+
+  insert-optional(
+    data,
+    "archive",
+    optional-string(archive),
+  )
+
+  insert-optional(
+    data,
+    "archive-location",
+    optional-string(archive-location),
+  )
+
+  // Optional edition.
+  if edition != none {
+    data.insert("edition", edition)
+  }
+
+  // Academic supervisor (approximated as an affiliated role).
+  if supervisor != none and supervisor-role != none {
+    data.insert("affiliated", (
+      (
+        role: supervisor-role,
+        names: supervisor,
+      ),
+    ))
+  }
+
+  // The citation key must be dynamically inserted.
+  let entries = (:)
+  entries.insert(final-key, data)
+
+  let output = yaml.encode(entries)
+
+  asset("thesis.yaml", output)
+}

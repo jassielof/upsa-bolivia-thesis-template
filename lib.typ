@@ -1,6 +1,6 @@
 #import "lib/info.typ": print-layout as print-layout-state
 #import "lib/book.typ": front-cover as book-front-cover, spine-cover as book-spine-cover
-#import "lib/biblatex.typ": generate as get-biblatex
+#import "lib/cite.typ": generate as generate-biblatex, generate-hayagriva
 #import "lib/abstract.typ": bime as bime-abstract
 #import "lib/csl-styles.typ"
 #import "lib/setting.typ": settings
