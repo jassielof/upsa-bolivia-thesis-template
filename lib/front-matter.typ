@@ -1,7 +1,7 @@
 #import "toc.typ": all-outlines
 #import "main-matter.typ": chapter-page
 
-// Genera la página de agradecimientos del documento, si aplica.
+/// Genera la página de agradecimientos del documento, si aplica.
 #let acknowledgements-page(body) = {
   if body == none {
     return
@@ -10,9 +10,9 @@
   body
 }
 
-// Genera la página dedicatoria del documento, si aplica.
-//
-// Se recomienda que la dedicatoria sea breve y concisa (1 página).
+/// Genera la página dedicatoria del documento, si aplica.
+///
+/// Se recomienda que la dedicatoria sea breve y concisa (1 página).
 #let dedication-page(body) = {
   if body == none {
     return
@@ -21,7 +21,7 @@
   body
 }
 
-// Genera las páginas preliminares del documento, incluyendo carátula, índices, abstracto, etc.
+/// Genera las páginas preliminares del documento, incluyendo carátula, índices, abstracto, etc.
 #let front-matter(
   problem: none,
   objective: none,
@@ -54,6 +54,7 @@
   )
 
   show heading: set text(size: typeface.text.size)
+  show heading.where(level: 2): set text(..typeface.section)
   show heading: set block(spacing: 1.5em)
   show outline.entry: set text(number-type: "lining", number-width: "tabular")
 
@@ -71,10 +72,10 @@
     ),
   )
 
-  show table: set text(size: typeface.text.size - (1 / 6 * 1em), hyphenate: true)
+  show table: set text(size: typeface.text.size, hyphenate: true)
   show table: set par(
-    spacing: 1.5em - 0.5em,
-    leading: 1.25em - 0.25em,
+    spacing: 1.5em / 2,
+    leading: 1.25em / 2,
     justify: true,
   )
 
@@ -88,11 +89,7 @@
     lower(counter(page).display("i"))
   })
 
-  show heading.where(level: 1): set heading(
-    supplement: [Capítulo],
-  )
-
-  show heading.where(level: 1): it => chapter-page(it)
+  show heading.where(level: 1): it => chapter-page(it, alignment: center)
   show heading.where(level: 1): smallcaps
   show heading.where(level: 2): set align(center)
 
