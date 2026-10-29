@@ -30,7 +30,7 @@
   let cover-margins = if paper-size == "a4" {
     (x: 30mm, y: 35mm)
   } else {
-    (x: 1.25in, y: 1.5in)
+    (x: 1.2in, y: 1.4in)
   }
 
   let meta-scale = if is-front-cover { 1.12 } else { 1.0 }

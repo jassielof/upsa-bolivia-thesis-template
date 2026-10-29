@@ -148,17 +148,35 @@
     keywords: keywords,
   )
 
+  let page-margins(paper-size, print-layout) = {
+    let a4 = paper-size == "a4"
+
+    let normal = if a4 { 25mm } else { 1in }
+    let binding = if a4 { 35mm } else { 1.4in }
+
+    if print-layout == "screen" {
+      normal
+    } else if print-layout == "duplex" {
+      (
+        inside: binding,
+        outside: normal,
+        top: normal,
+        bottom: normal,
+      )
+    } else {
+      (
+        left: binding,
+        right: normal,
+        top: normal,
+        bottom: normal,
+      )
+    }
+  }
+
   set page(
     // Art. 142: Márgenes
     // Los márgenes serán 4 cm para el izquierdo, y 2.5 cm para el resto (incluye la numeración de página [por defecto en Typst])
-    margin: if info.print-layout.final() == "screen" and target() == "paged" {
-      1in
-    } else {
-      (
-        ..if info.print-layout.final() == "duplex" { (inside: 4cm) } else { (left: 4cm) },
-        rest: 1in,
-      )
-    },
+    margin: page-margins(paper-size, print-layout),
     // Art. 137: Tipo de hoja
     // El tipo de hoja será papel bond blanco, de 75 g, tamaño carta (us-letter) en posición vertical.
     paper: paper-size,

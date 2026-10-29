@@ -142,8 +142,8 @@
   )
 
   set par(
-    leading: 1.25em,
-    spacing: 1.5em,
+    leading: 0.85em,
+    spacing: 0.9em,
     justify: true,
     justification-limits: (
       spacing: (min: 75%, max: 130%),
