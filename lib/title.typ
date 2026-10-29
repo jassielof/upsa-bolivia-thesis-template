@@ -100,7 +100,7 @@
 
   if author-id != none and not is-front-cover [
     #v(1em)
-    #text(size: info-size * 0.95, number-type: "lining", number-width: "tabular")[#sym.numero Reg.: #author-id]
+    #text(size: info-size * 0.95, number-type: "lining", number-width: "tabular")[Código de Estudiante: #author-id]
   ]
 
   if supervisor != none {
