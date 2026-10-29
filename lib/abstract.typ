@@ -114,7 +114,7 @@
     / #upper[Nombres y apellidos del autor]: #author
     / #upper[Nombres y apellidos del tutor o prof. guía]: #supervisor
     / #upper[Ciudad]: #city
-    / #upper[Año del trabajo]: #text(year, number-type: "lining", number-width: "tabular")
+    / #upper[Año del trabajo]: #text( number-type: "lining", number-width: "tabular")[#year]
   ]
 
   line(length: 100%)

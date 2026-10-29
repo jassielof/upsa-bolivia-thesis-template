@@ -132,9 +132,112 @@
   ),
 )
 
+#let helvetica = (
+  text: (
+    font: "Helvetica",
+    size: 10pt,
+  ),
+  display: "Helvetica",
+  math: (
+    font: "Lete Sans Math",
+    size: 10pt,
+  ),
+  mono: (
+    font: "Courier Prime",
+    size: 9.5pt,
+  ),
+)
+
+#let helvetica-neue = (
+  text: (
+    font: "Helvetica Neue",
+    size: 10pt,
+  ),
+  display: "Helvetica Neue",
+  math: (
+    font: "Lete Sans Math",
+    size: 10pt,
+  ),
+  mono: (
+    font: ("Inconsolata", "Inconsolata EX", "Inconsolata LGC"),
+    size: 9pt,
+  ),
+)
+
+#let times-new-roman = (
+  text: (
+    font: "Times New Roman",
+    size: 11pt,
+  ),
+  display: "Times New Roman",
+  math: (
+    font: "TeX Gyre Termes Math",
+    size: 11pt,
+  ),
+  mono: (
+    font: ("Courier Prime", "TeX Gyre Cursor", "Courier New", "Courier"),
+    size: 9.5pt,
+  ),
+)
+
+#let termes = (
+  text: (
+    font: "TeX Gyre Termes",
+    size: 11pt,
+  ),
+  display: "TeX Gyre Termes",
+  math: (
+    font: "TeX Gyre Termes Math",
+    size: 11pt,
+  ),
+  mono: (
+    font: ("Courier Prime", "TeX Gyre Cursor"),
+    size: 9.5pt,
+  ),
+)
+
+#let heros = (
+  text: (
+    font: "TeX Gyre Heros",
+    size: 11pt,
+  ),
+  display: "TeX Gyre Heros",
+  math: (
+    font: "Lete Sans Math",
+    size: 11pt,
+  ),
+  mono: (
+    font: ("Inconsolata", "Inconsolata EX", "Inconsolata LGC"),
+    size: 9pt,
+  ),
+)
+
+#let arial = (
+  text: (
+    font: "Arial",
+    size: 10pt,
+  ),
+  display: "Arial",
+  math: (
+    font: "Luciole Math",
+    size: 9.5pt,
+  ),
+  mono: (
+    font: ("Inconsolata", "Inconsolata EX", "Inconsolata LGC"),
+    size: 9pt,
+  ),
+)
+
 #let default = reforma
+
 #let typefaces = (
   "Reforma": reforma,
+  "Termes": termes,
+  "Arial": arial,
+  "Helvetica": helvetica,
+  "Heros": heros,
+  "Helvetica Neue": helvetica-neue,
+  "Times New Roman": times-new-roman,
   "Adobe Source": adobe-source,
   "Alegreya": alegreya,
   "Piazzolla": piazzolla,

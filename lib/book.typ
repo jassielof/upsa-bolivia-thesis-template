@@ -11,7 +11,7 @@
   let volumes = info.volumes.get()
 
   set document(
-    title: title
+    title: title,
   )
 
   if volumes == none {
@@ -27,7 +27,7 @@
     )
 
     set text(
-      font: typeface.title-info.font,
+      font: typeface.display,
       weight: "bold",
       hyphenate: false,
     )
@@ -48,7 +48,7 @@
         -90deg,
         reflow: true,
         box(
-          text(title, font: typeface.title.font, size: 22pt, weight: "bold"),
+          text(title, font: typeface.display, size: 22pt, weight: "bold"),
           width: 90%,
         ),
       ),

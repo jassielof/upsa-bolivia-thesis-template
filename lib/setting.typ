@@ -104,12 +104,12 @@
   info.font-family.update(typeface)
 
   let print-layout-options = ("screen", "duplex", "simplex")
-  let print-layout = info.print-layout.final()
   assert(
-    print-layout in print-layout-options,
+    info.print-layout.final() in print-layout-options,
     message: "El formato de impresión (print-layout) debe ser: " + print-layout-options.join(", ", last: " o ") + ".",
   )
   info.print-layout.update(print-layout)
+  // let print-layout = info.print-layout.final()
 
   assert(
     author-name != none,
@@ -151,11 +151,11 @@
   set page(
     // Art. 142: Márgenes
     // Los márgenes serán 4 cm para el izquierdo, y 2.5 cm para el resto (incluye la numeración de página [por defecto en Typst])
-    margin: if print-layout == "screen" and target() == "paged" {
+    margin: if info.print-layout.final() == "screen" and target() == "paged" {
       1in
     } else {
       (
-        ..if print-layout == "duplex" { (inside: 4cm) } else { (left: 4cm) },
+        ..if info.print-layout.final() == "duplex" { (inside: 4cm) } else { (left: 4cm) },
         rest: 1in,
       )
     },

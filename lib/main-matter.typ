@@ -160,7 +160,7 @@
     supplement: [Fórmula],
   )
 
-  show math.equation: set text(font: typeface.math.font)
+  show math.equation: set text(font: typeface.math.font, size: typeface.math.size)
 
   set figure.caption(separator: parbreak(), position: top)
   show figure: set align(left)
