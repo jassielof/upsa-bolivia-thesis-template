@@ -142,8 +142,8 @@
   )
 
   set par(
-    leading: 0.85em,
-    spacing: 0.9em,
+    spacing: 1.5em,
+    leading: 1em,
     justify: true,
     justification-limits: (
       spacing: (min: 75%, max: 130%),
@@ -159,6 +159,15 @@
     numbering: "(1)",
     supplement: [Fórmula],
   )
+
+  set enum(numbering: n => text(
+    number-type: "lining",
+    number-width: "tabular",
+    numbering(
+      "1.",
+      n,
+    ),
+  ))
 
   show math.equation: set text(font: typeface.math.font, size: typeface.math.size)
 
@@ -227,7 +236,7 @@
     if pos.len() == 1 {
       numbering("1", ..pos)
     } else if pos.len() <= 4 {
-      numbering("1.1.", ..pos)
+      numbering("1.1", ..pos)
     }
   })
 
