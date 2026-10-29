@@ -175,11 +175,12 @@
   show figure: set align(left)
   show figure.where(kind: image): set block(breakable: false, sticky: true)
   show figure.where(kind: table): set block(breakable: true, sticky: false)
-  show table: set text(size: typeface.text.size - (1 / 6 * 1em))
+  show table: set text(size: typeface.text.size * 0.9)
   show table: set par(
-    spacing: 1.5em - 0.5em,
-    leading: 1.25em - 0.25em,
+    spacing: 1.5em,
+    leading: 1em,
   )
+  show footnote: set text(size: typeface.text.size * 0.8)
   show raw: set text(font: typeface.mono.font, size: typeface.mono.size)
   show figure.where(kind: math.equation): set figure(supplement: [Fórmula])
   set figure(
@@ -197,35 +198,43 @@
   }
 
   show quote.where(block: true): set block(spacing: 1.5em)
-  show quote: set text(style: "italic")
 
   // TODO: Move this as an APA quote function and use wordometer
-  show quote: it => {
-    let quote-text-words = to-string(it.body).split(regex("\\s+")).filter(word => word != "").len()
+  import "@preview/wordometer:0.1.6": total-words, word-count
 
-    if quote-text-words < 40 {
-      ["#it.body" ]
+  show quote: it => word-count(total => {
+    let is-block = total.words >= 40
 
-      if (type(it.attribution) == label) {
-        cite(it.attribution)
-      } else if (
-        type(it.attribution) == str or type(it.attribution) == content
-      ) {
-        it.attribution
-      }
+    let attribution = if it.attribution == none {
+      none
+    } else if type(it.attribution) == label {
+      cite(it.attribution)
     } else {
-      block(inset: (left: 0.5in))[
-        #set par(first-line-indent: 0.5in)
+      it.attribution
+    }
+
+    if is-block {
+      block(
+        inset: (left: 0.5in, rest: 0pt),
+        outset: 0pt,
+      )[
+        #set par(first-line-indent: 0pt)
+        #set text(size: typeface.text.size * 0.95)
+
         #it.body
-        #if (type(it.attribution) == label) {
-          cite(it.attribution)
-        } else if (type(it.attribution) == str or type(it.attribution) == content) {
-          linebreak()
-          text(style: "normal", it.attribution)
+        #if attribution != none {
+          h(0.3em)
+          attribution
         }
       ]
+    } else {
+      ["#it.body"]
+
+      if attribution != none {
+        [~g#attribution]
+      }
     }
-  }
+  })
 
   // Art. 144: Encabezamientos
   // Todo escrito deberá incluir encabezados para destacar los subtemas de la investigación. Para ello se deberá considerar un espacio adicional antes y después de cada encabezado. Se podrá remarcar los encabezados con negrillas, en cuyo caso solo se necesita un espacio antes del encabezado.

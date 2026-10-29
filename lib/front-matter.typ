@@ -28,11 +28,12 @@
   executive-summary: none,
   dedication: none,
   abstract-content: context {
-    let chapters = query(heading.where(outlined: true, supplement: [Capítulo]))
-      .filter(it => it.numbering != none)
+    let chapters = query(heading.where(outlined: true, supplement: [Capítulo])).filter(it => it.numbering != none)
     outline(
       target: selector.or(..chapters.map(it => heading.where(
-        outlined: true, supplement: [Capítulo], numbering: it.numbering,
+        outlined: true,
+        supplement: [Capítulo],
+        numbering: it.numbering,
       ))),
       indent: 0em,
       title: [Contenido],
@@ -79,7 +80,7 @@
   show table: set text(size: typeface.text.size, hyphenate: true)
   show table: set par(
     spacing: 1.5em / 2,
-    leading: 1.25em / 2,
+    leading: 1em / 2,
     justify: true,
   )
 
