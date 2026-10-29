@@ -62,7 +62,7 @@
 
   set align(center)
 
-  uni-logo(width: if is-front-cover { 55% } else { 40% })
+  uni-logo(width: if is-front-cover { 55% } else { 45% })
 
   v(3.5em)
 
