@@ -88,11 +88,23 @@
 }
 
 #let normalize-author(raw-name) = {
+  if raw-name == none {
+    return none
+  }
+
   let raw = str(raw-name).trim()
+
+  // Remove academic and professional titles.
+  let titles = regex(
+    "(?i)^((dr|dra|prof|profa|ing|lic|msc|m\\.sc|phd|ph\\.d)\\.?\\s+)+",
+  )
+
+  raw = raw.replace(titles, "").trim()
+
   if raw.contains(",") {
     return raw.split(",").map(s => s.trim()).join(", ")
   }
-
+  
   let s = raw
   let multi-particles = (
     (" de la ", " de~la "),
@@ -158,6 +170,20 @@
   lines.join("\n")
 }
 
+#let optional-string(value) = {
+  if value == none {
+    return none
+  }
+
+  let result = str(to-string(value)).trim()
+  if result == "" { none } else { result }
+}
+
+#let insert-optional(dict, key, value) = {
+  if value != none {
+    dict.insert(key, value)
+  }
+}
 
 /// Genera la entrada BibLaTeX de la tesis en formato `.bib`.
 /// - author: Nombre en formato "Apellidos, Nombres". Si es none, se normaliza automáticamente.
@@ -207,7 +233,7 @@
     keywords: formatted-keywords,
     degree: info.degree-level.get() + " en " + info.degree-program.get(),
     pagetotal: info.work-pages.final(),
-    supervisor: info.supervisor.get(),
+    supervisor: normalize-author(optional-string(info.supervisor.get())),
   )
 
   let biblatex = format-biblatex(
@@ -217,22 +243,6 @@
   )
 
   return asset("thesis.bib", bytes(biblatex))
-}
-
-
-#let optional-string(value) = {
-  if value == none {
-    return none
-  }
-
-  let result = str(to-string(value)).trim()
-  if result == "" { none } else { result }
-}
-
-#let insert-optional(dict, key, value) = {
-  if value != none {
-    dict.insert(key, value)
-  }
 }
 
 /// Genera la entrada Hayagriva de la tesis en formato `.yml`.
@@ -277,7 +287,7 @@
   let university = optional-string(info.university.get())
   let university-short = optional-string(info.university-short.get())
   let city = optional-string(info.city.get())
-  let supervisor = optional-string(info.supervisor.get())
+  let supervisor = normalize-author(optional-string(info.supervisor.get()))
   let abstract = optional-string(info.work-abstract.get())
 
   // Hayagriva thesis metadata.

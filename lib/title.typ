@@ -101,7 +101,7 @@
   })
 
   if author-id != none and not is-front-cover [
-    #v(1em)
+    #v(1.25em)
     #text(size: info-size * 0.95, number-type: "lining", number-width: "tabular")[Código de Estudiante: #author-id]
   ]
 
