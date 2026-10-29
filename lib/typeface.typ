@@ -2,17 +2,18 @@
   text: (
     font: "IBM Plex Serif",
     weight: 450,
-    size: 10pt,
+    size: 10.5pt,
   ),
   display: "IBM Plex Sans",
   math: (
     font: "IBM Plex Math",
     weight: 450,
+    size: 10.5pt,
   ),
   mono: (
     font: "IBM Plex Mono",
     weight: 450,
-    size: 9.5pt,
+    size: 9pt,
   ),
 )
 
@@ -28,10 +29,9 @@
   ),
   mono: (
     font: "New Computer Modern Mono",
-    size: 10pt,
+    size: 9.5pt,
   ),
 )
-#let tex-gyre = ()
 
 #let reforma = (
   text: (
@@ -46,23 +46,23 @@
   mono: (
     font: "IBM Plex Mono",
     weight: 450,
-    size: 9.5pt,
+    size: 9pt,
   ),
 )
 
 #let adobe-source = (
   text: (
     font: "Source Serif 4",
-    size: 10pt,
+    size: 10.5pt,
   ),
   display: "Source Sans 3",
   math: (
     font: "STIX Two Math",
-    size: 11pt,
+    size: 10.5pt,
   ),
   mono: (
     font: "Source Code Pro",
-    size: 9.5pt,
+    size: 9pt,
   ),
 )
 
@@ -79,7 +79,7 @@
     size: 10pt,
   ),
   mono: (
-    font: ("Consolas", "Inconsolata", "Inconsolata EX", "Inconsolata LGC"),
+    font: ("Consolas", "Inconsolata", "Inconsolata EX"),
     size: 10pt,
   ),
 )
@@ -96,7 +96,7 @@
   ),
   mono: (
     font: "IBM Plex Mono",
-    size: 9.5pt,
+    size: 9pt,
   ),
 )
 
@@ -112,7 +112,7 @@
   ),
   mono: (
     font: "IBM Plex Mono",
-    size: 9.5pt,
+    size: 9pt,
   ),
 )
 
@@ -128,38 +128,38 @@
   ),
   mono: (
     font: "IBM Plex Mono",
-    size: 9.5pt,
+    size: 9pt,
   ),
 )
 
 #let helvetica = (
   text: (
     font: "Helvetica",
-    size: 10pt,
+    size: 10.5pt,
   ),
   display: "Helvetica",
   math: (
     font: "Lete Sans Math",
-    size: 10pt,
+    size: 10.5pt,
   ),
   mono: (
     font: "Courier Prime",
-    size: 9.5pt,
+    size: 9pt,
   ),
 )
 
 #let helvetica-neue = (
   text: (
     font: "Helvetica Neue",
-    size: 10pt,
+    size: 10.5pt,
   ),
   display: "Helvetica Neue",
   math: (
     font: "Lete Sans Math",
-    size: 10pt,
+    size: 10.5pt,
   ),
   mono: (
-    font: ("Inconsolata", "Inconsolata EX", "Inconsolata LGC"),
+    font: ("Inconsolata", "Inconsolata EX"),
     size: 9pt,
   ),
 )
@@ -176,7 +176,7 @@
   ),
   mono: (
     font: ("Courier Prime", "TeX Gyre Cursor", "Courier New", "Courier"),
-    size: 9.5pt,
+    size: 9pt,
   ),
 )
 
@@ -192,22 +192,22 @@
   ),
   mono: (
     font: ("Courier Prime", "TeX Gyre Cursor"),
-    size: 9.5pt,
+    size: 9pt,
   ),
 )
 
 #let heros = (
   text: (
     font: "TeX Gyre Heros",
-    size: 11pt,
+    size: 10.5pt,
   ),
   display: "TeX Gyre Heros",
   math: (
     font: "Lete Sans Math",
-    size: 11pt,
+    size: 10.5pt,
   ),
   mono: (
-    font: ("Inconsolata", "Inconsolata EX", "Inconsolata LGC"),
+    font: ("Inconsolata", "Inconsolata EX"),
     size: 9pt,
   ),
 )
@@ -215,15 +215,15 @@
 #let arial = (
   text: (
     font: "Arial",
-    size: 10pt,
+    size: 10.5pt,
   ),
   display: "Arial",
   math: (
     font: "Luciole Math",
-    size: 9.5pt,
+    size: 10.5pt,
   ),
   mono: (
-    font: ("Inconsolata", "Inconsolata EX", "Inconsolata LGC"),
+    font: ("Inconsolata", "Inconsolata EX"),
     size: 9pt,
   ),
 )
@@ -246,6 +246,7 @@
   "New Computer Modern": new-computer-modern,
   "Inter": inter,
 )
+
 #let extra = (
   ..typefaces,
   "Inter": inter,

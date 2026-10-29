@@ -169,7 +169,7 @@
     ),
   ))
 
-  show math.equation: set text(font: typeface.math.font, size: typeface.math.size)
+  show math.equation: set text(..typeface.math)
 
   set figure.caption(separator: parbreak(), position: top)
   show figure: set align(left)
