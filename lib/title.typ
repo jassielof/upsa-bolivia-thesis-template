@@ -11,6 +11,7 @@
   import "info.typ"
 
   let typeface = info.font.get()
+  let font-family = info.font-family.get()
   let author = info.author-name.get()
   let faculty = info.faculty.get()
   let faculty-short = info.faculty-short.get()
@@ -37,10 +38,13 @@
   let title-scale = if is-front-cover { 1.14 } else { 1.0 }
   let info-size = typeface.text.size * meta-scale
 
-  set text(font: typeface.display)
+  set text(
+    font: typeface.display,
+  )
 
   show title: set text(
-    font: typeface.text.font,
+    font: if font-family != "Reforma" { typeface.text.font } else { "Reforma 1969" },
+    features: (case: 1),
     size: typeface.text.size * 1.6 * title-scale,
     hyphenate: false,
     number-type: "lining",
@@ -63,9 +67,7 @@
   v(3.5em)
 
   block(spacing: 0pt, {
-    text(weight: "bold", size: info-size * 1.15, tracking: 0.04em)[#upper(faculty-short) --- #faculty]
-    // v(0.45em)
-    // text(major, size: info-size * 1.1, weight: "medium")
+    text(weight: "bold", size: info-size * 1.15, tracking: 0.04em)[#upper(faculty-short) --- #smallcaps(faculty)]
   })
 
   v(1.2fr)
