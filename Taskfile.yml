@@ -14,7 +14,7 @@ tasks:
       TYPST_FEATURES: bundle
     desc: Genera los documentos requeridos para la BIME
     cmds:
-      - typst compile --format bundle --pdf-standard a-3a template/book.typ
+      - typst compile --format bundle --pdf-standard ua-1,a-3a template/book.typ
     sources:
       - "template/**/*.typ"
       - template/book.typ

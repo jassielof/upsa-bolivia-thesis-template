@@ -1,0 +1,4 @@
+*.pdf
+/template/book/
+thumbnail.*
+.task

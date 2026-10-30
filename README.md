@@ -15,6 +15,33 @@ El kit incluye documentos de ejemplo, recursos gráficos, instrucciones de compi
 
 Este repositorio contiene la implementación de la plantilla y está dirigido principalmente a quienes necesitan comprender, configurar o mantener sus estilos y componentes.
 
+## Ejemplo mínimo incluido
+
+La carpeta `template/` conserva tres archivos:
+
+- `thesis.typ`: datos del trabajo, páginas preliminares, capítulos, una tabla, citas y un anexo.
+- `referencias.bib`: bibliografía de ejemplo en formato BibLaTeX.
+- `book.typ`: generación conjunta del informe, el resumen BIME, la cubierta, el lomo y la referencia BibLaTeX del propio trabajo.
+
+Este ejemplo permite probar la biblioteca. El [kit de inicio](https://github.com/jassielof/upsa-bolivia-thesis-starter) sigue siendo la base recomendada para un trabajo real: contiene una estructura más completa, recursos y automatización. El ejemplo mínimo no utiliza Taskfile.
+
+Desde la raíz de este repositorio, con Typst 0.15.1 o posterior:
+
+```sh
+typst compile --root . --pdf-standard a-2a,ua-1 template/thesis.typ
+typst compile --root . --features bundle --format bundle --pdf-standard a-2a,ua-1 template/book.typ template/book
+```
+
+La primera orden genera `template/thesis.pdf`. La segunda crea `template/book/` con `thesis.pdf`, `abstract.pdf`, `front-cover.pdf`, `spine-cover.pdf` y `thesis.bib`. Este último contiene la referencia del propio trabajo; `referencias.bib` contiene sus fuentes citadas.
+
+El ejemplo selecciona `typeface: "Termes"`: requiere TeX Gyre Termes, TeX Gyre Termes Math y TeX Gyre Cursor. Instalá las fuentes o agregá `--font-path /ruta/a/fuentes` a las órdenes. En Ubuntu 24.04 se encuentran en los paquetes `fonts-texgyre` y `fonts-texgyre-math`. La plantilla no duplica la colección de fuentes del kit de inicio.
+
+Para probar partes sin cambiar los capítulos:
+
+```sh
+typst compile --root . --input multi-part=true --pdf-standard a-2a,ua-1 template/thesis.typ template/thesis-parts.pdf
+```
+
 ## Documentos contemplados
 
 La implementación se ha desarrollado principalmente alrededor de las necesidades de los proyectos de grado de Ingeniería.
@@ -114,7 +141,7 @@ Sus principales ámbitos de aplicación incluyen:
 
 Los parámetros concretos, sus valores admitidos y sus valores predeterminados deben consultarse en la implementación de la plantilla.
 
-No todos los aspectos propuestos están necesariamente disponibles en la versión actual. En particular, los conjuntos tipográficos enumerados y la configuración opcional de partes requieren completar sus respectivos ajustes.
+La implementación ofrece conjuntos tipográficos enumerados mediante `typeface` y partes opcionales mediante `multi-part`. Las familias disponibles y sus valores se consultan en `lib/typeface.typ`; su disponibilidad técnica no implica aprobación institucional.
 
 ## Citas y bibliografía
 
@@ -165,7 +192,7 @@ La plantilla y el kit de inicio están disponibles para evaluación académica.
 Las principales cuestiones pendientes son:
 
 - La aceptación de familias tipográficas alternativas a las mencionadas en el Reglamento de Graduación.
-- La configuración predeterminada por capítulos y la posibilidad de utilizar partes.
+- La comprobación académica de las opciones de capítulos y partes ya implementadas.
 - La comprobación del funcionamiento en diferentes entornos.
 - La recopilación de observaciones de estudiantes y docentes.
 - La eventual evaluación de mejoras adicionales de presentación académica.

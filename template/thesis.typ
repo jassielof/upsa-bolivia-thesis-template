@@ -1,178 +1,85 @@
 #import "../lib.typ": back-matter, front-matter, main-matter, settings
 
-
 #show: settings.with(
-  fonts: (
-    body: "Source Serif 4",
-    title: "Source Sans 3",
-  ),
-  graduation-work-info: (
-    abstract: lorem(20),
-    keywords: ("UPSA", "tesis"),
-  ),
-  is-web: is-web,
+  author-name: "Nombre Apellido",
+  author-email: "estudiante@example.org",
+  author-university-id: 2026000000,
+  work-title: [Ejemplo mínimo de trabajo de grado],
+  supervisor: [Nombre del asesor],
+  degree-level: [Licenciatura],
+  degree-program: [Ingeniería de Sistemas],
+  faculty: [Facultad de Ingeniería],
+  faculty-acronym: [FAI],
+  modality: [Proyecto de Grado],
+  modality-acronym: [PG],
+  date: datetime.today().year(),
+  abstract: [
+    Este documento ilustra la configuración de un trabajo de grado mediante una
+    plantilla en Typst. Reúne los datos del trabajo, capítulos, una tabla y citas
+    bibliográficas. Los documentos de entrega se generan a partir de los mismos
+    metadatos. Es un ejemplo de uso y no presenta una investigación realizada ni
+    resultados obtenidos en la Universidad.
+  ],
+  keywords: ("UPSA", "Typst", "trabajo de grado"),
 )
 
 #front-matter(
-  executive-summary: lorem(50),
-  objective: lorem(30),
-  problem: lorem(20),
+  problem: [Aplicación consistente de las reglas de presentación del trabajo.],
+  objective: [Mostrar el uso básico de la plantilla y sus documentos de entrega.],
 )
 
-#show: main-matter.with()
+#show: main-matter
 
-= Introducción
+= Introducción <cap-introduccion>
 
-== Definiciones
+Este ejemplo mínimo permite reconocer los archivos de la plantilla. Para iniciar
+un proyecto completo, utilizá el #link("https://github.com/jassielof/upsa-bolivia-thesis-starter")[kit de inicio].
+Reemplazá los datos, el resumen y el contenido por los de tu trabajo; confirmá la
+estructura con tu asesor.
 
-#lorem(500)
+== Organización del documento
 
-=== Justificación
+Un capítulo se escribe con `=`, una sección con `==` y una subsección con `===`.
+Las partes son opcionales: al activar `multi-part`, se introducen con `part()`;
+los capítulos mantienen la misma escritura.
 
-#lorem(50)
+== Citas y referencias
 
-==== Justificación académica
+La documentación de Typst explica su sistema de composición y bibliografía
+@typst-docs. Las referencias de este ejemplo se encuentran en `referencias.bib`,
+en formato BibLaTeX. Cambiá el estilo de citas según los requisitos de tu carrera.
 
-#lorem(100)
+= Desarrollo <cap-desarrollo>
 
-===== Sobre la Universidad
-
-#lorem(100)
-
-====== Historia de la Universidad
-#lorem(100)
-
-======= Misión y Visión de la Universidad
-#lorem(100)
-
-=== Objetivos
-
-#lorem(20)
-
-==== Objetivo general
-
-#lorem(100)
-
-==== Objetivos específicos
-
-#lorem(50)
-
-+ #lorem(100)
-+ #lorem(100)
-+ #lorem(100)
-+ #lorem(100)
-+ #lorem(100)
-
-= Desarrollo
-
-== Análisis de requerimientos
-
-#lorem(20)
-
-=== Requerimientos funcionales
-
-#lorem(300)
-
-=== Requerimientos no funcionales
-
-#lorem(500)
+La @tabla-entregables resume dos salidas del ejemplo. Las cubiertas y la referencia
+bibliográfica del propio trabajo se generan desde `book.typ` con los mismos datos.
 
 #figure(
   table(
-    columns: 3,
-    table.header([Caso de Uso], [Actor], [Descripción]),
-    [CU-01], [Usuario], [El usuario inicia sesión en el sistema.],
-    [CU-02], [Administrador], [El administrador gestiona los usuarios.],
-    table.hline(),
+    columns: (1fr, 2fr),
+    table.header([Documento], [Propósito]),
+    [Informe], [Presentar el contenido principal del trabajo.],
+    [Resumen BIME], [Describir el tema central según las instrucciones de entrega.],
   ),
-  caption: [Tabla de Casos de Uso],
-)
+  caption: [Documentos de ejemplo.],
+) <tabla-entregables>
 
-== Pruebas
-
-=== Código Fuente
-
-#lorem(10)
-
-#figure(
-  ```go
-  package main
-
-  import "fmt"
-
-  func main() {
-      fmt.Println("Hello, World!")
-  }
-  ```,
-  alt: "Hello World en Go",
-  caption: [Ejemplo de código fuente en Go],
-)
-
-=== Verificación y validación
-
-#lorem(30)
-
-#figure(
-  caption: [Recurrencia de complejidad algorítmica (Teorema Maestro) y entropía de Shannon],
-  kind: math.equation,
-  $
-    T(n) & = a T(n/b) + f(n) \
-    H(X) & = - sum_(i=1)^n p(x_i) log_2 p(x_i)
-  $,
-  alt: "Ecuación de complejidad algorítmica y entropía",
-)
-
+Las instrucciones BIME establecen un resumen temático de 250 palabras
+@bime-entrega. Verificá que el contenido que uses en un proyecto real cumpla
+sus requisitos y los de tu unidad académica.
 
 = Conclusiones
 
-== Conclusiones
+El ejemplo muestra la relación entre la configuración, los capítulos y las
+referencias. La presentación definitiva y los documentos exigidos se acuerdan
+con la carrera y las entidades receptoras.
 
-#lorem(50)
+#show: back-matter
 
-=== #lorem(10)
+#bibliography("referencias.bib", style: "ieee")
 
-#lorem(40)
+= Material complementario
 
-=== #lorem(10)
-
-#lorem(40)
-
-=== #lorem(10)
-
-#lorem(40)
-
-=== #lorem(10)
-
-#lorem(40)
-
-=== #lorem(10)
-
-#lorem(40)
-
-== Recomendaciones
-
-#lorem(500)
-
-#show: back-matter.with()
-
-#bibliography(
-  "referencias.yaml",
-  style: "ieee",
-  full: true,
-)
-
-= Anexos
-
-== Curriculum Vitae
-
-== Carta de Aprobación
-
-#lorem(100)
-
-== Presupuesto
-
-#lorem(100)
-
-=== Herramientas
-
-#lorem(50)
+Este anexo ilustra la numeración independiente del contenido final. Consultá el
+@cap-desarrollo para volver al ejemplo de tabla y al @cap-introduccion para revisar
+la configuración del contenido.
